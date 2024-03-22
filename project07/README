@@ -1,0 +1,22 @@
+REQUIRED LIBRARIES
+------------------
+tabulate
+
+-------------------------------------------------------------------------------------
+
+The test json files can be used to test the outputs of the code by running the command
+from Adminstrator/ 
+
+python3 admin-tester/runjsontest.py
+
+python3 board-tester/runjsontest.py
+
+
+To run unit tests from Adminstrator/
+
+pytest unit-test.py
+
+ 
+New test files can be added to the admin-tester/state-tests directory to be included in the testing
+New test files can be added to the board-tester/board-tests directory to be included in the testing
+

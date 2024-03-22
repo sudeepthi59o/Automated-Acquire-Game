@@ -1,0 +1,64 @@
+from Game import Game
+#can use this file to run a continuous game
+requests=[{ "request" : "setup", "players" : ["A", "B","C"]}, {
+    "request": "buy",
+    "shares": ["Sackson"],
+    "state": {
+      "board": {
+        "tiles": [
+          { "row": "B", "column": "3" },
+          { "row": "B", "column": "2" },
+          { "row": "C", "column": "2" },
+          { "row": "C", "column": "6" }
+        ],
+        "hotels": [
+          {
+            "hotel": "Sackson",
+            "tiles": [
+              { "row": "B", "column": "3" },
+              { "row": "B", "column": "2" },
+              { "row": "C", "column": "2" }
+            ]
+          }
+        ]
+      },
+      "players": [
+        {
+          "player": "A",
+          "cash": 6000,
+          "shares": [],
+          "tiles": [
+            { "row": "F", "column": "8" },
+            { "row": "I", "column": "11" },
+            { "row": "G", "column": "9" },
+            { "row": "D", "column": "5" },
+            { "row": "I", "column": "12" },
+            { "row": "C", "column": "4" }
+          ]
+        },
+        {
+          "player": "B",
+          "cash": 6000,
+          "shares": [],
+          "tiles": [
+            { "row": "F", "column": "7" },
+            { "row": "E", "column": "6" },
+            { "row": "A", "column": "1" },
+            { "row": "A", "column": "2" },
+            { "row": "D", "column": "6" },
+            { "row": "E", "column": "7" }
+          ]
+        }
+      ]
+    }
+  }]
+
+game=Game([])
+output=None
+for request in requests:
+    print(request)
+    if "state" in request.keys() and output:
+        request["state"]=output
+    output=game.handleRequest(request)
+   #print(output)
+    #print("===========================>")
