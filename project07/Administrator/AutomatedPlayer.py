@@ -19,7 +19,7 @@ class AutomatedPlayer:
         for tile in self.tiles:
             ans.append(str(tile))
         return (
-            "Name:" + self.name + " Cash:" + str(self.cash) + " Tiles:" + " ".join(ans)
+            "Name: " + self.name + " Cash: " + str(self.cash) + " Tiles: " + " ".join(ans)
         )
 
     def getPlayerObj(self):

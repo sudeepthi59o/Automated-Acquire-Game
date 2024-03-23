@@ -13,34 +13,48 @@ class GamePlay:
         self.game.setup(["Player A","Player B"],self.p1_strategy)
         #self.game.board.printB()
 
-    def minTile(self,minRow,minCol):
-        smallestRow=minRow
-        smallestCol=minCol
-        currPlayer=self.game.players[0]
-        for tile in currPlayer.tiles:
-            if tile.row<smallestRow:
-                smallestRow=tile.row
-                smallestCol=tile.column
-            elif tile.row==smallestRow:
-                smallestCol=min(tile.column,smallestCol)
+    # def minTile(self,minRow,minCol):
+    #     smallestRow=minRow
+    #     smallestCol=minCol
+    #     currPlayer=self.game.players[0]
+    #     for tile in currPlayer.tiles:
+    #         if tile.row<smallestRow:
+    #             smallestRow=tile.row
+    #             smallestCol=tile.column
+    #         elif tile.row==smallestRow:
+    #             smallestCol=min(tile.column,smallestCol)
         
-        return smallestRow,smallestCol
+    #     return smallestRow,smallestCol
     
     def orderedStrategy(self):
 
-        print(self.game.players[0])
+        print(self.game.players[0].getPlayerObj())
 
-        if self.game.gameEnd():
-            return self.game.players[0].name+" has won the game!"
-        
+        currPlayer=self.game.players[0]
+        sorted_tiles = sorted(currPlayer.tiles, key=lambda tile: (tile.row, tile.column))
         smallestHotel="Worldwide"
-        smallestRow,smallestCol=self.minTile(15,15)
+        smallestRow=sorted_tiles[0].row
+        smallestCol=sorted_tiles[0].column
 
         for hotel in self.game.board.allHotels.keys():
             if self.game.board.allHotels[hotel]["placed"]==False:
                 smallestHotel=min(smallestHotel,hotel)
         
-        self.game.place(smallestRow,smallestCol,smallestHotel)
+        res=self.game.place(smallestRow,smallestCol,smallestHotel)
+
+        maxtries=5
+        while not res and maxtries>0:
+            maxtries-=1
+            sorted_tiles.append(sorted_tiles.pop(0))
+            smallestRow=sorted_tiles[0].row
+            smallestCol=sorted_tiles[0].column
+            res=self.game.place(smallestRow,smallestCol,smallestHotel)
+
+        if maxtries==0 and not res:
+            return self.game.players[0].name+" has no possible moves. "+self.game.players[1].name+" wins the game!"
+        
+        if self.game.gameEnd():
+            return self.game.players[0].name+" wins the game!"
 
         shareCount=3
         for hotel in self.game.board.allHotels.keys():
@@ -66,10 +80,9 @@ class GamePlay:
     def playGame(self):
         self.setupGame()
         if self.p1_strategy==1:
-            self.orderedStrategy()
+            print(self.orderedStrategy())
         else:
             self.randomStrategy()
-        return 1
 
 g=GamePlay()
-print(g.playGame())
+g.playGame()

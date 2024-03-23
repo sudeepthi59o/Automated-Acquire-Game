@@ -53,7 +53,18 @@ class Board:
         self.allHotels[hotel]["dataObj"].tiles += tiles
 
     def printB(self):
-        print(tabulate(self.board, tablefmt="grid"))
+         # Creating indexes for rows and columns
+        rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
+        columns = [str(i) for i in range(1, 13)]
+
+        # Creating a new board with row and column indexes
+        indexed_board = [[None] + columns]  # Adding an empty cell for the top-left corner
+        for i, row in enumerate(self.board):
+            indexed_row = [rows[i]] + row
+            indexed_board.append(indexed_row)
+
+        # Printing the indexed board
+        print(tabulate(indexed_board, tablefmt="grid"))
 
     def checkRowColCondition(self, row, col):
         if row < 0 or row > 8 or col < 0 or col > 11:
@@ -84,6 +95,7 @@ class Board:
         if self.checkRowColCondition(row, col + 1):
             returnDict["R"]["symbol"] = self.board[row][col + 1]
 
+        currHotel=None
         for key in returnDict.keys():
             if key == "meta":
                 continue
@@ -94,7 +106,9 @@ class Board:
             elif returnDict[key]["symbol"] == "0":
                 continue
             else:
-                returnDict["meta"]["hotel"] += 1
+                if currHotel!=returnDict[key]["symbol"]:
+                    currHotel=returnDict[key]["symbol"]
+                    returnDict["meta"]["hotel"] += 1
         return returnDict
 
     def singleTon(self, row, col, adjacentDict):
@@ -104,7 +118,7 @@ class Board:
         if col == 0 or col == 11:
             n -= 1
 
-        if adjacentDict["meta"]["empty"] == n or self.getAvailableHotelCount() == 0:
+        if adjacentDict["meta"]["empty"] == n or (self.getAvailableHotelCount() == 0 and adjacentDict["meta"]["hotel"]==0):
             return True
 
         return False
@@ -169,7 +183,6 @@ class Board:
         row = tile.row
         col = tile.column
         adjacentDict = self.adjacentHelper(row, col)
-
         if self.singleTon(row, col, adjacentDict):
             self.updateBoard(tile, "O")
             return "singleton",None
@@ -220,12 +233,13 @@ class Board:
             for key in adjacentDict:
                 if key != "meta" and self.isHotel(adjacentDict[key]["symbol"]):
                     adjacentHotels.append(adjacentDict[key]["symbol"])
+            for hotel in adjacentHotels:
+                if len(self.allHotels[hotel]["dataObj"].tiles) >=11:
+                    return "error",None
             res=self.aquireHotels(adjacentHotels, tile)
             
             acquired_hotels=[]
             for hotel in adjacentHotels:
-                if len(self.allHotels[hotel]["dataObj"].tiles) >=11:
-                    return "error",None
                 if hotel!=res[0]:
                     acquired_hotels.append(hotel)
             return "merging",[res,acquired_hotels]

@@ -85,6 +85,10 @@ class Game:
             tiles.append(self.getTileObj(tile))
 
         return AutomatedPlayer(playerState.name, playerState.cash, shares, tiles,self.players[0].strategy) if self.mode=='automated' else Player(playerState.name, playerState.cash, shares, tiles)
+    
+    def removeTilesAfterPlace(self):
+        for tile in self.board.tiles:
+            self.removeAvlTile(tile)
 
     def place(self, row, col, hotel=None):
         merge_copy = {}
@@ -103,7 +107,6 @@ class Game:
         if flg:
             return {"error": "Not a valid tile for this player"}
         res, hotellist = self.board.placeTile(Tiles(row, col), hotel)
-
         # If successful remove tile from player
         if res != "error":
             updatedtiles = []
@@ -114,7 +117,10 @@ class Game:
                 if player.name == players.name:
                     player.tiles = updatedtiles
         else:
-            return {"error": "Place request unsuccessful"}
+            print("error Place request unsuccessful")
+            return False
+
+        self.removeTilesAfterPlace()
 
         if res == "founding" and self.numShares[hotel] != 0:
             for player in self.players:
@@ -170,8 +176,7 @@ class Game:
 
         # self.board.printB()
         print("*****") 
-        print("row ",row)
-        print("col ",col)                       
+        print(Tiles(row,col).getTileObj())                     
         print(res)
         print("*****")
         return self.getStateObj()
@@ -299,7 +304,7 @@ class Game:
                 hotelsOnBoard += 1
                 if len(self.board.allHotels[hotel]["dataObj"].tiles) == 41:
                     return True
-                elif len(self.board.allHotels[hotel]["dataObj"].tiles) == 11:
+                elif len(self.board.allHotels[hotel]["dataObj"].tiles) >= 11:
                     safeHotels += 1
 
         if safeHotels == hotelsOnBoard and safeHotels!=0:
@@ -312,114 +317,3 @@ class Game:
 #game = Game([])
 
 #print(game.handleRequest({"request": "setup", "players": ["A", "B", "C"]}))
-# print(game.handleRequest({
-#     "request": "place",
-#     "row": "C",
-#     "column": "5",
-#     "hotel": "Tower",
-#     "state": {
-#         "board": {
-#             "tiles": [
-#                 {
-#                     "row": "B",
-#                     "column": "3"
-#                 },
-#                 {
-#                     "row": "B",
-#                     "column": "2"
-#                 },
-#                 {
-#                     "row": "C",
-#                     "column": "2"
-#                 },
-#                 {
-#                     "row": "C",
-#                     "column": "6"
-#                 }
-#             ],
-#             "hotels": [
-#                 {
-#                     "hotel": "Sackson",
-#                     "tiles": [
-#                         {
-#                             "row": "B",
-#                             "column": "3"
-#                         },
-#                         {
-#                             "row": "B",
-#                             "column": "2"
-#                         },
-#                         {
-#                             "row": "C",
-#                             "column": "2"
-#                         }
-#                     ]
-#                 }
-#             ]
-#         },
-#         "players": [
-#             {
-#                 "player": "A",
-#                 "cash": 6000,
-#                 "shares": [],
-#                 "tiles": [
-#                     {
-#                         "row": "F",
-#                         "column": "8"
-#                     },
-#                     {
-#                         "row": "C",
-#                         "column": "5"
-#                     },
-#                     {
-#                         "row": "G",
-#                         "column": "9"
-#                     },
-#                     {
-#                         "row": "D",
-#                         "column": "5"
-#                     },
-#                     {
-#                         "row": "I",
-#                         "column": "12"
-#                     },
-#                     {
-#                         "row": "C",
-#                         "column": "4"
-#                     }
-#                 ]
-#             },
-#             {
-#                 "player": "B",
-#                 "cash": 6000,
-#                 "shares": [],
-#                 "tiles": [
-#                     {
-#                         "row": "F",
-#                         "column": "7"
-#                     },
-#                     {
-#                         "row": "E",
-#                         "column": "6"
-#                     },
-#                     {
-#                         "row": "A",
-#                         "column": "1"
-#                     },
-#                     {
-#                         "row": "A",
-#                         "column": "2"
-#                     },
-#                     {
-#                         "row": "D",
-#                         "column": "6"
-#                     },
-#                     {
-#                         "row": "E",
-#                         "column": "7"
-#                     }
-#                 ]
-#             }
-#         ]
-#     }
-# }))
