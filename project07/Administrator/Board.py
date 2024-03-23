@@ -190,6 +190,10 @@ class Board:
         elif self.founding(row, col, adjacentDict):
             if hotel==None:
                 return "error",None
+            elif self.allHotels[hotel]["placed"] == True:
+                for hotelname in self.allHotels:
+                    if self.allHotels[hotelname]["placed"]==False:
+                        hotel=hotelname
 
             self.allHotels[hotel]["placed"] = True
             self.updateBoard(tile, hotel)
