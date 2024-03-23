@@ -47,7 +47,7 @@ class GamePlay:
         
         res=self.game.place(smallestRow,smallestCol,smallestHotel)
 
-        maxtries=5
+        maxtries=5                              #5 tries to place a tile
         while not res and maxtries>0:
             maxtries-=1
             sorted_tiles.append(sorted_tiles.pop(0))
@@ -59,7 +59,7 @@ class GamePlay:
             self.players_without_vaild_moves.add(self.game.players[0].name)
             return self.no_valid_moves_ordered()
          
-        if len(self.players_without_vaild_moves)==len(self.game.players):
+        if len(self.players_without_vaild_moves)==len(self.game.players):     #If all players have no valid moves - terminate the game
             print("=============================================================>")
             print("No more possible moves by the players")
             winner=self.game.declare_winner()
@@ -116,7 +116,7 @@ class GamePlay:
         
         res=self.game.place(pickedRow,pickedCol,pickedHotel)
 
-        maxtries=5
+        maxtries=5                  #5 tries to place a tile
         while not res and maxtries>0:
             maxtries-=1
             picked_tile = self.getRandomTile(currPlayer)
@@ -124,7 +124,7 @@ class GamePlay:
             pickedCol=picked_tile.column
             res=self.game.place(pickedRow,pickedCol,self.getRandomHotel())
         
-        if self.randomTries<=0:
+        if self.randomTries<=0:                     #Try 20 player turns place the tile, else terminate the game
             print("=============================================================>")
             print("No valid moves by the players in 20 turns")
             print("Ending the game")
@@ -133,7 +133,7 @@ class GamePlay:
         
         if maxtries==0 and not res:
             self.players_without_vaild_moves.add(self.game.players[0].name)
-            self.randomTries-=1     #Try 20 player turns place the tile, else terminate the game
+            self.randomTries-=1     
             return self.no_valid_moves_random()
 
         if self.game.gameEnd():
@@ -142,7 +142,7 @@ class GamePlay:
             winner=self.game.declare_winner()
             return winner+ " wins the game!!"
 
-        share_tries=5
+        share_tries=5                   # Try to buy a random number of shares from a random hotel five times
         shareCount=self.getRandomShares()
         buy_from_hotel=self.getRandomHotel()
         while shareCount>0 and share_tries>0:
