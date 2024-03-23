@@ -3,6 +3,7 @@ from Board import Board
 from Hotel import Hotel
 from Share import Share
 from Tiles import Tiles
+from AutomatedPlayer import AutomatedPlayer
 from shareDict import shareDict
 import heapq
 import random
@@ -10,9 +11,10 @@ import random
 
 class Game:
 
-    def __init__(self, state=None, players=None):
+    def __init__(self, state=None, players=None,mode=None):
         self.initializeState(state, players)
         self.allTiles = []
+        self.mode=mode
         for i in range(1, 13):
             for j in ["A", "B", "C", "D", "E", "F", "G", "H", "I"]:
                 self.allTiles.append(Tiles(j, i))
@@ -24,6 +26,8 @@ class Game:
         return False
 
     def pickRandomTile(self):
+        if len(self.allTiles)<2:
+            raise ValueError("No more tiles")
         num = random.randint(0, len(self.allTiles) - 1)
         tile = self.allTiles[num]
         return self.removeAvlTile(tile)
@@ -42,11 +46,16 @@ class Game:
             p.append(ply.getPlayerObj())
         return {"board": self.board.getBoardObject(), "players": p}
 
-    def setup(self, players):
+    def setup(self, players,strategies=1):
         # self.board = Board([], [])
         # self.players = []
         # self.assignedTiles = []
-        self.initializeState(None, players)
+        if self.mode=='automated':
+            for player in players:
+                    self.players.append(AutomatedPlayer(player, 6000, [], [],'ordered' if strategies==1 else 'random'))
+            self.initializeShares()
+        else:
+            self.initializeState(None, players)
         if len(players) <= 6:
             for player in self.players:
                 curPlayerTiles = []
@@ -62,39 +71,33 @@ class Game:
         return self.getStateObj()
 
     def getShareObj(self, shareState):
-        return Share(shareState["share"], shareState["count"])
+        return Share(shareState.share, shareState.count)
 
     def getTileObj(self, tileState):
-        return Tiles(tileState["row"], tileState["column"])
+        return Tiles(tileState.row, tileState.column)
 
     def getPlayerObj(self, playerState):
         shares = []
-        for share in playerState["shares"]:
+        for share in playerState.shares:
             shares.append(self.getShareObj(share))
         tiles = []
-        for tile in playerState["tiles"]:
+        for tile in playerState.tiles:
             tiles.append(self.getTileObj(tile))
 
-        return Player(playerState["player"], playerState["cash"], shares, tiles)
+        return AutomatedPlayer(playerState.name, playerState.cash, shares, tiles,self.players[0].strategy) if self.mode=='automated' else Player(playerState.name, playerState.cash, shares, tiles)
 
-    def place(self, row, col, state, hotel=None):
-        self.initializeState(state)
-        # self.board = Board(state["board"]["tiles"], state["board"]["hotels"])
-        # self.board.printB()
+    def place(self, row, col, hotel=None):
         merge_copy = {}
         for hotelname in self.board.allHotels:
             merge_copy[hotelname] = self.board.allHotels[hotelname]["dataObj"].tiles
 
         if Tiles(row, col) in self.assignedTiles:
             return {"error": "Tile already on board"}
-        # self.players = []
-        # for player in state["players"]:
-        #     self.players.append(self.getPlayerObj(player))
-        # self.initializeShares()
-        players = state["players"][0]
+      
+        players = self.players[0]
         flg = True
-        for tile in players["tiles"]:
-            if row == tile["row"] and col == tile["column"]:
+        for tile in players.tiles:
+            if row == tile.row and col == tile.column:
                 flg = False
                 break
         if flg:
@@ -104,18 +107,18 @@ class Game:
         # If successful remove tile from player
         if res != "error":
             updatedtiles = []
-            for tile in players["tiles"]:
-                if row != tile["row"] or col != tile["column"]:
+            for tile in players.tiles:
+                if row != tile.row or col != tile.column:
                     updatedtiles.append(self.getTileObj(tile))
             for player in self.players:
-                if player.name == players["player"]:
+                if player.name == players.name:
                     player.tiles = updatedtiles
         else:
             return {"error": "Place request unsuccessful"}
 
         if res == "founding" and self.numShares[hotel] != 0:
             for player in self.players:
-                if player.name == players["player"]:
+                if player.name == players.name:
                     player.addShareForPlayer(hotel, 1)
                     self.numShares[hotel] -= 1
                     self.assignedShares[hotel][player.name] += 1
@@ -166,6 +169,11 @@ class Game:
                                 player.removeShareForPlayer(hotel)
 
         # self.board.printB()
+        print("*****") 
+        print("row ",row)
+        print("col ",col)                       
+        print(res)
+        print("*****")
         return self.getStateObj()
 
     def initializeShares(self):
@@ -219,7 +227,7 @@ class Game:
         elif players:
             self.board = Board([], [])
             for player in players:
-                self.players.append(Player(player, 6000, [], []))
+                    self.players.append(Player(player, 6000, [], []))
         else:
             self.board = Board([], [])
 
@@ -271,61 +279,39 @@ class Game:
             return True
         return False
 
-    def buy(self, shares, state):
-        self.initializeState(state)
-        # self.board = Board(state["board"]["tiles"], state["board"]["hotels"])
-        # for player in state["players"]:
-        #     self.players.append(self.getPlayerObj(player))
-        # self.initializeShares()
-        for hotelName in shares:
-            if (
-                self.buyShare(
-                    self.board.allHotels[hotelName]["dataObj"], 1, self.players[0]
-                )
-                == False
-            ):
-                return {
-                    "error": "Not enough money to buy shares or hotel not established!"
-                }
+    def buy(self,hotelName):
+        if self.buyShare(self.board.allHotels[hotelName]["dataObj"], 1, self.players[0])== False:
+            #print("error: Not enough money to buy shares or hotel not established!")
+            return False
         return self.getStateObj()
 
-    def done(self, state):
-        self.initializeState(state)
-        # self.board = Board(state["board"]["tiles"], state["board"]["hotels"])
-        # self.assignedTiles = []
-        # for tile in state["board"]["tiles"]:
-        #     tile = self.getTileObj(tile)
-        #     self.assignedTiles.append(tile)
-        # for player in state["players"]:
-        #     self.players.append(self.getPlayerObj(player))
-        # self.initializeShares()
+    def done(self):
         self.players[0].tiles.append(self.pickRandomTile())
         self.players.append(self.players.pop(0))
         return self.getStateObj()
 
-    def handleRequest(self, request):
-        try:
-            if request["request"] == "setup":
-                return self.setup(request["players"])
-            elif request["request"] == "place":
-                return self.place(
-                    request["row"],
-                    request["column"],
-                    request["state"],
-                    request["hotel"] if ("hotel" in request) else None,
-                )
-            elif request["request"] == "buy":
-                return self.buy(request["shares"], request["state"])
-            elif request["request"] == "done":
-                return self.done(request["state"])
+    def gameEnd(self):
+        safeHotels=0
+        hotelsOnBoard=0
 
-        except Exception as e:
-            return {"error": "Invalid request", "message": e}
+        for hotel in self.board.allHotels.keys():
+            if self.board.allHotels[hotel]["placed"]:
+                hotelsOnBoard += 1
+                if len(self.board.allHotels[hotel]["dataObj"].tiles) == 41:
+                    return True
+                elif len(self.board.allHotels[hotel]["dataObj"].tiles) == 11:
+                    safeHotels += 1
+
+        if safeHotels == hotelsOnBoard and safeHotels!=0:
+            return True
+        
+        return False
+                
 
 
-game = Game([])
+#game = Game([])
 
-# print(game.handleRequest({"request": "setup", "players": ["A", "B", "C"]}))
+#print(game.handleRequest({"request": "setup", "players": ["A", "B", "C"]}))
 # print(game.handleRequest({
 #     "request": "place",
 #     "row": "C",
