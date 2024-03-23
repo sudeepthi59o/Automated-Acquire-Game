@@ -11,24 +11,13 @@ class GamePlay:
         #int(input('Pick a strategy for the game: 1 - Ordered, 2 - Random ---->'))  #Add validation for input
         self.p2_strategy=self.p1_strategy      #Assigning same strategy to both players
         self.game.setup(["Player A","Player B"],self.p1_strategy)
-        #self.game.board.printB()
 
-    # def minTile(self,minRow,minCol):
-    #     smallestRow=minRow
-    #     smallestCol=minCol
-    #     currPlayer=self.game.players[0]
-    #     for tile in currPlayer.tiles:
-    #         if tile.row<smallestRow:
-    #             smallestRow=tile.row
-    #             smallestCol=tile.column
-    #         elif tile.row==smallestRow:
-    #             smallestCol=min(tile.column,smallestCol)
-        
-    #     return smallestRow,smallestCol
-    
     def orderedStrategy(self):
 
+        print("Player playing: "+self.game.players[0].name)
+        print("Current state of players:")
         print(self.game.players[0].getPlayerObj())
+        print(self.game.players[1].getPlayerObj())
 
         currPlayer=self.game.players[0]
         sorted_tiles = sorted(currPlayer.tiles, key=lambda tile: (tile.row, tile.column))
@@ -59,14 +48,17 @@ class GamePlay:
         shareCount=3
         for hotel in self.game.board.allHotels.keys():
             while shareCount>0:
-                if not self.game.buy(hotel):
+                res=self.game.buy(hotel)
+                if not res:
                     break
                 else:
                     shareCount-=1
         self.game.done()
 
-        #print(self.game.getStateObj())
         print(self.game.board.printB())
+
+        print("Turn Over")
+        print("=============================================================>")
         return self.orderedStrategy()
 
 

@@ -32,13 +32,6 @@ class Game:
         tile = self.allTiles[num]
         return self.removeAvlTile(tile)
 
-        # while len(self.assignedTiles) <= 12 * 9:
-        #     num = random.randint(0, 107)
-        #     row = int(num / 12)
-        #     col = int(num / 9)
-        #     if Tiles(row, col) not in self.assignedTiles:
-        #         self.assignedTiles.append(Tiles(row, col))
-        #         return Tiles(row, col)
 
     def getStateObj(self):
         p = []
@@ -47,9 +40,7 @@ class Game:
         return {"board": self.board.getBoardObject(), "players": p}
 
     def setup(self, players,strategies=1):
-        # self.board = Board([], [])
-        # self.players = []
-        # self.assignedTiles = []
+
         if self.mode=='automated':
             for player in players:
                     self.players.append(AutomatedPlayer(player, 6000, [], [],'ordered' if strategies==1 else 'random'))
@@ -62,12 +53,9 @@ class Game:
                 for i in range(6):
                     curPlayerTiles.append(self.pickRandomTile())
                 player.tiles += curPlayerTiles
-            # playerObj = Player(player, 6000, [], curPlayerTiles)
-            # self.players.append(playerObj)
         else:
             return {"error": "More than 6 players"}
-        # print(self.players)
-        # self.initializeShares()
+
         return self.getStateObj()
 
     def getShareObj(self, shareState):
@@ -106,7 +94,9 @@ class Game:
                 break
         if flg:
             return {"error": "Not a valid tile for this player"}
+        
         res, hotellist = self.board.placeTile(Tiles(row, col), hotel)
+
         # If successful remove tile from player
         if res != "error":
             updatedtiles = []
@@ -117,7 +107,7 @@ class Game:
                 if player.name == players.name:
                     player.tiles = updatedtiles
         else:
-            print("error Place request unsuccessful")
+            print("Place request unsuccessful for "+str(Tiles(row,col).getTileObj()))
             return False
 
         self.removeTilesAfterPlace()
@@ -130,56 +120,79 @@ class Game:
                     self.assignedShares[hotel][player.name] += 1
 
         if res == "merging":
-            stockholders = self.merger_payout(hotellist)
-            if stockholders == "error":
-                return self.getStateObj()
-
-            for hotel in stockholders:
-                price = shareDict[hotel][len(merge_copy[hotel])]
-                maj_flag = False
-                for playername in stockholders[hotel][0]:
-                    if len(stockholders[hotel][0]) == 1:
-                        for player in self.players:
-                            if player.name == playername:
-                                player.cash += price * 10
-                                self.assignedShares[hotel][playername] = 0
-                                player.removeShareForPlayer(hotel)
-                        break
-
-                    if len(stockholders[hotel][0]) > 1:
-                        for player in self.players:
-                            if player.name == playername:
-                                player.cash += round(
-                                    (price * 15) / len(stockholders[hotel][0])
-                                )
-                                self.assignedShares[hotel][playername] = 0
-                                player.removeShareForPlayer(hotel)
-                                maj_flag = True
-
-                for playername in stockholders[hotel][1]:
-                    if len(stockholders[hotel][1]) == 1 and not maj_flag:
-                        for player in self.players:
-                            if player.name == playername:
-                                player.cash += price * 5
-                                self.assignedShares[hotel][playername] = 0
-                                player.removeShareForPlayer(hotel)
-                        break
-
-                    if len(stockholders[hotel][1]) > 1 and not maj_flag:
-                        for player in self.players:
-                            if player.name == playername:
-                                player.cash += round(
-                                    (price * 5) / len(stockholders[hotel][1])
-                                )
-                                self.assignedShares[hotel][playername] = 0
-                                player.removeShareForPlayer(hotel)
+            merge_res=self.hotel_merge(hotellist,merge_copy)
 
         # self.board.printB()
         print("*****") 
-        print(Tiles(row,col).getTileObj())                     
-        print(res)
+        print("Tile placed at "+str(Tiles(row,col).getTileObj())) 
+        print("Action: "+res)
         print("*****")
         return self.getStateObj()
+    
+    def payout_players(self,playername,majority_minority,num_shareholders,price,hotel,flag):
+        
+        if majority_minority=='majority' and num_shareholders==1:
+            for player in self.players:
+                        if player.name == playername:
+                            player.cash += price * 10
+                            self.assignedShares[hotel][playername] = 0
+                            sharecnt=player.trackShareForPlayer(hotel)
+                            self.numShares[hotel]+=sharecnt
+                            player.removeShareForPlayer(hotel)
+            return flag
+        
+        elif majority_minority=='majority' and num_shareholders>1:
+            for player in self.players:
+                        if player.name == playername:
+                            player.cash += round(
+                                (price * 15) / num_shareholders
+                            )
+                            self.assignedShares[hotel][playername] = 0
+                            sharecnt=player.trackShareForPlayer(hotel)
+                            self.numShares[hotel]+=sharecnt
+                            player.removeShareForPlayer(hotel)
+            flag=True
+            return flag
+        
+        elif majority_minority=='minority' and num_shareholders==1 and not flag:
+            for player in self.players:
+                        if player.name == playername:
+                            player.cash += price * 5
+                            self.assignedShares[hotel][playername] = 0
+                            sharecnt=player.trackShareForPlayer(hotel)
+                            self.numShares[hotel]+=sharecnt
+                            player.removeShareForPlayer(hotel)
+            return flag
+
+        elif majority_minority=='minority' and num_shareholders>1 and not flag:
+            for player in self.players:
+                        if player.name == playername:
+                            player.cash += round(
+                                (price * 5) / num_shareholders
+                            )
+                            self.assignedShares[hotel][playername] = 0
+                            sharecnt=player.trackShareForPlayer(hotel)
+                            self.numShares[hotel]+=sharecnt
+                            player.removeShareForPlayer(hotel)
+            return flag
+
+    
+    def hotel_merge(self,hotellist,merge_copy):
+        stockholders = self.merger_payout(hotellist)
+        if stockholders == "error":
+                return self.getStateObj()
+
+        for hotel in stockholders:
+            price = shareDict[hotel][len(merge_copy[hotel])]
+            maj_flag = False
+            num_majority=len(stockholders[hotel][0])
+            num_minority=len(stockholders[hotel][1])
+            for playername in stockholders[hotel][0]:
+                maj_flag=self.payout_players(playername,'majority',num_majority,price,hotel,maj_flag)
+
+            for playername in stockholders[hotel][1]:
+                maj_flag=self.payout_players(playername,'minority',num_minority,price,hotel,maj_flag)
+
 
     def initializeShares(self):
         for key in self.assignedShares:
@@ -191,7 +204,6 @@ class Game:
                         key
                     )
                     self.numShares[key] -= player.trackShareForPlayer(key)
-        # print(self.assignedShares)
 
     def initializeState(self, state, players=None):
         self.numShares = {
@@ -281,6 +293,7 @@ class Game:
             player.addShareForPlayer(hotel.label, count)
             self.assignedShares[hotel.label][player.name] += count
             player.cash -= shareDict[hotel.label][len(hotel.tiles)] * count
+            self.numShares[hotel.label]-=1
             return True
         return False
 
@@ -311,6 +324,9 @@ class Game:
             return True
         
         return False
+
+    def declare_winner(self):
+        return 1
                 
 
 
