@@ -120,7 +120,7 @@ class Game:
                     self.assignedShares[hotel][player.name] += 1
 
         if res == "merging":
-            merge_res=self.hotel_merge(hotellist,merge_copy)
+            merge_res=self.hotel_merge_pay(hotellist,merge_copy)
 
         # self.board.printB()
         print("*****") 
@@ -177,7 +177,7 @@ class Game:
             return flag
 
     
-    def hotel_merge(self,hotellist,merge_copy):
+    def hotel_merge_pay(self,hotellist,merge_copy):
         stockholders = self.merger_payout(hotellist)
         if stockholders == "error":
                 return self.getStateObj()
@@ -260,7 +260,7 @@ class Game:
             if heap:
                 maxval, maxshare = heapq.heappop(heap)
             else:
-                return "error"
+                break
             maxval = -1 * maxval
             majority.append(maxshare)
             while heap:
@@ -281,7 +281,7 @@ class Game:
                     break
             stockholders[hotel] = [majority, minority]
 
-        return stockholders
+        return stockholders if stockholders else "error"
 
     def buyShare(self, hotel, count, player):
         if shareDict[hotel.label][len(hotel.tiles)] == 0:
@@ -326,7 +326,24 @@ class Game:
         return False
 
     def declare_winner(self):
-        return 1
+        merge_copy = {}
+        hotels=[]
+        currCash={}
+        for hotelname in self.board.allHotels:
+            merge_copy[hotelname] = self.board.allHotels[hotelname]["dataObj"].tiles
+            hotels.append(hotelname)
+        hotellist=[[],hotels]
+        res=self.hotel_merge_pay(hotellist,merge_copy)
+        for player in self.players:
+            currCash[player.name]=player.cash
+        
+        print("Final Payout Completed")
+        winner=self.players[0].name
+        for player in currCash:
+            print(player+" has "+str(currCash[player]))
+            if currCash[player]>currCash[winner]:
+                winner=player
+        return winner
                 
 
 
