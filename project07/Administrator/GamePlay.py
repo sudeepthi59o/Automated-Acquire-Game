@@ -19,6 +19,7 @@ class GamePlay:
 
     def setupGame(self):
         self.p1_strategy = self.get_input()
+        #self.p1_strategy =1
         #int(input('Pick a strategy for the game: 1 - Ordered, 2 - Random ---->'))  #Add validation for input
         self.p2_strategy=self.p1_strategy      #Assigning same strategy to both players
         self.game.setup(["Player A","Player B"],self.p1_strategy)
@@ -88,7 +89,7 @@ class GamePlay:
                     shareCount-=1
         self.game.done()
 
-        print(self.game.board.printB())
+        self.game.board.printB()
 
         print("Turn Over")
         print("=============================================================>")

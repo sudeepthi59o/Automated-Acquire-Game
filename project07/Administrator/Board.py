@@ -52,7 +52,7 @@ class Board:
     def addTilesToHotel(self, hotel, tiles: list[Tiles]):
         self.allHotels[hotel]["dataObj"].tiles += tiles
 
-    def printB(self):
+    def printB(self)->None:
          # Creating indexes for rows and columns
         rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
         columns = [str(i) for i in range(1, 13)]
