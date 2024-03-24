@@ -10,8 +10,15 @@ class GamePlay:
         self.hotels=list(self.game.board.allHotels.keys())
         self.randomTries=20
 
+    def get_input(self):
+        value = int(input("Pick a strategy, 1 -> Ordered, 2 -> Random ----> "))
+        if value in [1,2]:
+            return value
+        else:
+            self.get_input()
+
     def setupGame(self):
-        self.p1_strategy=2
+        self.p1_strategy = self.get_input()
         #int(input('Pick a strategy for the game: 1 - Ordered, 2 - Random ---->'))  #Add validation for input
         self.p2_strategy=self.p1_strategy      #Assigning same strategy to both players
         self.game.setup(["Player A","Player B"],self.p1_strategy)
