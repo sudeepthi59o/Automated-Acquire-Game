@@ -11,15 +11,15 @@ import random
 
 class Game:
 
-    def __init__(self, state=None, players=None,mode=None):
-        self.initializeState(state, players)
-        self.allTiles = []
+    def __init__(self,state=None,mode=None,players=None):
         self.mode=mode
+        self.allTiles = []
         for i in range(1, 13):
             for j in ["A", "B", "C", "D", "E", "F", "G", "H", "I"]:
                 self.allTiles.append(Tiles(j, i))
+        self.initializeState(state=None,players=players)
 
-    def removeAvlTile(self, tile):
+    def removeAvlTile(self,tile):
         for i in range(len(self.allTiles)):
             if self.allTiles[i] == tile:
                 return self.allTiles.pop(i)
@@ -39,14 +39,9 @@ class Game:
             p.append(ply.getPlayerObj())
         return {"board": self.board.getBoardObject(), "players": p}
 
-    def setup(self, players,strategies=1):
+    def setup(self,players,strategies=None):
 
-        if self.mode=='automated':
-            for player in players:
-                    self.players.append(AutomatedPlayer(player, 6000, [], [],'ordered' if strategies==1 else 'random'))
-            self.initializeShares()
-        else:
-            self.initializeState(None, players)
+        self.initializeState(None,players=players,strategies=strategies)
         if len(players) <= 6:
             for player in self.players:
                 curPlayerTiles = []
@@ -59,20 +54,20 @@ class Game:
         return self.getStateObj()
 
     def getShareObj(self, shareState):
-        return Share(shareState.share, shareState.count)
+        return Share(shareState["share"], shareState["count"])
 
     def getTileObj(self, tileState):
         return Tiles(tileState.row, tileState.column)
 
     def getPlayerObj(self, playerState):
         shares = []
-        for share in playerState.shares:
+        for share in playerState["shares"]:
             shares.append(self.getShareObj(share))
         tiles = []
-        for tile in playerState.tiles:
+        for tile in playerState["tiles"]:
             tiles.append(self.getTileObj(tile))
 
-        return AutomatedPlayer(playerState.name, playerState.cash, shares, tiles,self.players[0].strategy) if self.mode=='automated' else Player(playerState.name, playerState.cash, shares, tiles)
+        return Player(playerState["player"], playerState["cash"], shares, tiles)
     
     def removeTilesAfterPlace(self):
         for tile in self.board.tiles:
@@ -205,7 +200,7 @@ class Game:
                     )
                     self.numShares[key] -= player.trackShareForPlayer(key)
 
-    def initializeState(self, state, players=None):
+    def initializeState(self, state, players=None,strategies=None):
         self.numShares = {
             "Worldwide": 25,
             "Sackson": 25,
@@ -226,7 +221,6 @@ class Game:
         }
         self.players = []
         self.assignedTiles = []
-
         if state:
             self.board = Board(state["board"]["tiles"], state["board"]["hotels"])
             if len(state["players"]) > 6:
@@ -241,10 +235,20 @@ class Game:
                 self.removeAvlTile(tile)
 
             self.initializeShares()
-        elif players:
+
+        elif players and self.mode=='None':
             self.board = Board([], [])
             for player in players:
                     self.players.append(Player(player, 6000, [], []))
+            self.initializeShares()
+
+        elif players and self.mode=='automated':
+            self.board = Board([], [])
+            i=0
+            for player in players:
+                    self.players.append(AutomatedPlayer(player, 6000, [], [], 1 if strategies[i]==1 else 2))
+                    i+=1
+            self.initializeShares()
         else:
             self.board = Board([], [])
 

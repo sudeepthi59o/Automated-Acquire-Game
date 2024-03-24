@@ -12,14 +12,17 @@ class AutomatedPlayer:
         self.cash = cash
         self.shares = shares
         self.tiles = tiles
-        self.strategy=strategy
+        self.strategy=strategy   # 1-Ordered, 2-Random
 
     def __str__(self):
         ans = []
         for tile in self.tiles:
             ans.append(str(tile))
+        sharelst=[]
+        for share in self.shares:
+            sharelst.append(share.name+": "+str(share.count))
         return (
-            "Name: " + self.name + " Cash: " + str(self.cash) + " Tiles: " + " ".join(ans)
+            self.name + ": [Cash: " + str(self.cash) + ", Shares: [" + ", ".join(sharelst)+ "], Tiles: [" + " ".join(ans)+"]]"
         )
 
     def getPlayerObj(self):

@@ -12,7 +12,7 @@ class Tiles:
             raise Exception("Invalid tile")
 
     def __str__(self):
-        return str([self.row, self.column])
+        return str([chr(ord("A") + self.row), str(self.column + 1)])
 
     def __eq__(self, obj1):
         return self.row == obj1.row and self.column == obj1.column
