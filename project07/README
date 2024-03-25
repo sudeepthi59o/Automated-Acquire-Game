@@ -19,7 +19,7 @@ pytest unit-test.py
 
 To run the Game betwwen Automated Players
 
-python3 AutomatedGamePlay.py
+python AutomatedGamePlay.py
 
  
 New test files can be added to the admin-tester/state-tests directory to be included in the testing
