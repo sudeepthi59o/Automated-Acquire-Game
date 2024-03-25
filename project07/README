@@ -20,7 +20,7 @@ Pick a strategy for the player, 1 -> Ordered, 2 -> Random ---->
 Enter 1 to pick Ordered strategy for the player
 Enter 2 to pick Random strategy for player
 
-A sample game output with both players playing with ordered strategy is in the Adminstrator/sample_output.txt file
+A sample game output with both players playing with ordered strategy is in the Adminstrator/sample_output.txt file (both players use ordered strategy)
 
  
 
