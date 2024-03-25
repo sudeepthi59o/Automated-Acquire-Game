@@ -16,6 +16,11 @@ To run unit tests from Adminstrator/
 
 pytest unit-test.py
 
+
+To run the Game betwwen Automated Players
+
+python3 GamePlay.py
+
  
 New test files can be added to the admin-tester/state-tests directory to be included in the testing
 New test files can be added to the board-tester/board-tests directory to be included in the testing
