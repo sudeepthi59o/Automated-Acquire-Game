@@ -17,7 +17,7 @@ class Game:
         for i in range(1, 13):
             for j in ["A", "B", "C", "D", "E", "F", "G", "H", "I"]:
                 self.allTiles.append(Tiles(j, i))
-        self.initializeState(state=None,players=players)
+        self.initializeState(state,players=players)
 
     def removeAvlTile(self,tile):
         for i in range(len(self.allTiles)):
@@ -65,7 +65,7 @@ class Game:
             shares.append(self.getShareObj(share))
         tiles = []
         for tile in playerState["tiles"]:
-            tiles.append(self.getTileObj(tile))
+            tiles.append(Tiles(tile["row"],tile["column"]))
 
         return Player(playerState["player"], playerState["cash"], shares, tiles)
     
@@ -80,8 +80,9 @@ class Game:
 
         if Tiles(row, col) in self.assignedTiles:
             return {"error": "Tile already on board"}
-      
+
         players = self.players[0]
+
         flg = True
         for tile in players.tiles:
             if row == tile.row and col == tile.column:
@@ -221,7 +222,9 @@ class Game:
         }
         self.players = []
         self.assignedTiles = []
+        
         if state:
+            
             self.board = Board(state["board"]["tiles"], state["board"]["hotels"])
             if len(state["players"]) > 6:
                 raise Exception({"error": "Max number of allowed players is 6"})
@@ -230,19 +233,21 @@ class Game:
                 self.players.append(self.getPlayerObj(player))
 
             for tile in state["board"]["tiles"]:
-                tile = self.getTileObj(tile)
+                tile = Tiles(tile["row"],tile["column"])
                 self.assignedTiles.append(tile)
                 self.removeAvlTile(tile)
 
             self.initializeShares()
 
-        elif players and self.mode=='None':
+        elif players and not self.mode:
+            
             self.board = Board([], [])
             for player in players:
                     self.players.append(Player(player, 6000, [], []))
             self.initializeShares()
 
         elif players and self.mode=='automated':
+            
             self.board = Board([], [])
             i=0
             for player in players:
@@ -250,6 +255,7 @@ class Game:
                     i+=1
             self.initializeShares()
         else:
+            
             self.board = Board([], [])
 
     def merger_payout(self, hotellist):

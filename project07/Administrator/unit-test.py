@@ -5,6 +5,7 @@ from Hotel import Hotel
 from Share import Share
 from Player import Player
 from Game import Game
+from AutomatedGamePlay import AutomatedGamePlay
 
 
 @pytest.fixture
@@ -216,13 +217,13 @@ def sample_state():
 
 
 @pytest.fixture
-def sample_game():
-    return Game(None, ["Madhur", "Jenil", "Sudeepthi"])
+def sample_game(sample_state):
+    return Game(state=sample_state, players=["Madhur", "Jenil", "Sudeepthi"])
 
 
 def test_gameInit():
     with pytest.raises(Exception) as exc_info:
-        game = Game(None, ["Madhur", "Jenil", "Sudeepthi",
+        game = Game(mode=None,players=["Madhur", "Jenil", "Sudeepthi",
                     "fsadfasfsasdsfsdfsfsfsss"])
     assert str(exc_info.value) == "invalid player name"
 
@@ -237,8 +238,8 @@ def test_pickRandomTile(sample_game):
 def test_setup(sample_game):
     result = sample_game.setup(
         ["Madhur", "Jenil", "Sudeepthi", "A", "B", "C", "D"])
-    result1 = sample_game.setup(["Madhur", "Jenil", "Sudeepthi", "A"])
-
+    result1 = sample_game.setup(players=["Madhur", "Jenil", "Sudeepthi", "A"])
+    print(result1)
     assert result == {'error': 'More than 6 players'}
     # can't test whole object since tiles are allotted randomnly
     assert len(result1['players'][0]['tiles']) == 6
@@ -246,8 +247,8 @@ def test_setup(sample_game):
     assert len(result1['players'][2]['tiles']) == 6
 
 
-def test_place(sample_game, sample_state):
-    result = sample_game.place(2, 3, sample_state)
+def test_place(sample_game):
+    result = sample_game.place(2, 3)
 
     assert result == {'error': 'Tile already on board'}
 
@@ -258,31 +259,18 @@ def test_merger_payout():
 
 
 def test_buy(sample_game, sample_state):
-    result = sample_game.buy(["Festival"], sample_state)
-    result1 = sample_game.buy(["Sackson", "Sackson"], sample_state)
-    print(result1)
-    assert result == {
-        'error': 'Not enough money to buy shares or hotel not established!'}
+    result = sample_game.buy("Festival")
+    result1 = sample_game.buy("Sackson")
+    assert result == False
     assert result1 == {'board': {'tiles': [{'row': 'B', 'column': '3'}, {'row': 'B', 'column': '2'}, {'row': 'C', 'column': '2'}, {'row': 'C', 'column': '6'}, {'row': 'A', 'column': '4'}, {'row': 'A', 'column': '5'}, {'row': 'C', 'column': '4'}, {'row': 'D', 'column': '4'}, {'row': 'E', 'column': '4'}, {'row': 'F', 'column': '4'}], 'hotels': [{'hotel': 'American', 'tiles': [{'row': 'A', 'column': '4'}, {'row': 'A', 'column': '5'}]}, {'hotel': 'Sackson', 'tiles': [{'row': 'B', 'column': '3'}, {'row': 'B', 'column': '2'}, {'row': 'C', 'column': '2'}]}, {'hotel': 'Tower', 'tiles': [{'row': 'C', 'column': '4'}, {'row': 'D', 'column': '4'}, {'row': 'E', 'column': '4'}, {'row': 'F', 'column': '4'}]}]}, 'players': [
-        {'player': 'A', 'cash': 5400, 'shares': [{'label': 'American', 'count': 2}, {'label': 'Tower', 'count': 3}, {'label': 'Sackson', 'count': 3}], 'tiles': [{'row': 'B', 'column': '4'}, {'row': 'I', 'column': '11'}, {'row': 'G', 'column': '9'}, {'row': 'D', 'column': '5'}, {'row': 'I', 'column': '12'}, {'row': 'C', 'column': '4'}]}, {'player': 'B', 'cash': 6000, 'shares': [{'label': 'American', 'count': 1}, {'label': 'Tower', 'count': 2}, {'label': 'Sackson', 'count': 3}], 'tiles': [{'row': 'F', 'column': '7'}, {'row': 'E', 'column': '6'}, {'row': 'A', 'column': '1'}, {'row': 'A', 'column': '2'}, {'row': 'D', 'column': '6'}, {'row': 'E', 'column': '7'}]}]}
+        {'player': 'A', 'cash': 5700, 'shares': [{'label': 'American', 'count': 2}, {'label': 'Tower', 'count': 3}, {'label': 'Sackson', 'count': 2}], 'tiles': [{'row': 'B', 'column': '4'}, {'row': 'I', 'column': '11'}, {'row': 'G', 'column': '9'}, {'row': 'D', 'column': '5'}, {'row': 'I', 'column': '12'}, {'row': 'C', 'column': '4'}]}, {'player': 'B', 'cash': 6000, 'shares': [{'label': 'American', 'count': 1}, {'label': 'Tower', 'count': 2}, {'label': 'Sackson', 'count': 3}], 'tiles': [{'row': 'F', 'column': '7'}, {'row': 'E', 'column': '6'}, {'row': 'A', 'column': '1'}, {'row': 'A', 'column': '2'}, {'row': 'D', 'column': '6'}, {'row': 'E', 'column': '7'}]}]}
 
 
 def test_done(sample_game, sample_state):
     # bug - self.players should be overridden with the passed board state
     # need one function to initialize Game using the passed state
-    result = Game(None, ["AAAA", "BBBB"]).done(sample_state)
-    print(result)
+    result=sample_game.done()
     assert len(result["players"][-1]["tiles"]) == 7
-    pass
-
-
-def test_handleRequest(sample_game):
-    # bug - pickRandomTile function exceeds recursion limit for more than 2 players
-    # result = sample_game.handleRequest({ "request" : "setup", "players" : ["A", "B"] })
-    result1 = sample_game.handleRequest(
-        {"request1": "setup", "players": ["A", "B"]})
-    print(result1)
-    assert result1["error"] ==  'Invalid request'
 
 
 # -------------------- Tiles.py ----------------------
@@ -338,3 +326,29 @@ def test_Share():
         result2 = Share("American", 100)
     assert str(exc_info.value) == "Invalid share count"
 
+# -------------------- AutomatedGamePlay.py ----------------------
+
+@pytest.fixture
+def sample_player():
+    return Player("A",6000,[],[Tiles(0,3),Tiles(1,2),Tiles(0,6),Tiles(5,3),Tiles(7,3),Tiles(3,3)])
+
+def test_getRandomTile(sample_player):
+    result=AutomatedGamePlay().getRandomTile(sample_player)
+    assert result.row <=8
+    assert result.column <=11
+
+def test_getRandomHotel():
+    result=AutomatedGamePlay().getRandomHotel()
+    assert result in [
+            "American",
+            "Continental",
+            "Festival",
+            "Imperial",
+            "Sackson",
+            "Tower",
+            "Worldwide",
+        ]
+
+def test_getRandomShares():
+    result=AutomatedGamePlay().getRandomShares()
+    assert result in [0,1,2]

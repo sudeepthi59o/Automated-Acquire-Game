@@ -21,7 +21,7 @@ class Player:
         for share in self.shares:
             sharelst.append(share.name+": "+str(share.count))
         return (
-            self.name + ":[ Cash: " + str(self.cash) + ", Shares: [" + ",".join(sharelst)+ "], Tiles: [" + " ".join(ans)+"]]"
+            self.name + ": [Cash: " + str(self.cash) + ", Shares: [" + ", ".join(sharelst)+ "], Tiles: [" + " ".join(ans)+"]]"
         )
 
 
