@@ -178,6 +178,26 @@ class Board:
         self.updateBoard(curTile, maxHotel.label)
         self.addTilesToHotel(maxHotel.label, [curTile])
         return [maxHotel.label]
+    
+    def checkGrowing(self,direction,row,col):
+        print("here")
+        if direction=='L':
+            adjacentDict=self.adjacentHelper(row,col-1)
+            if self.growing(row,col-1,adjacentDict):
+                self.placeTile(Tiles(row,col-1))
+        if direction=='R':
+            adjacentDict=self.adjacentHelper(row,col+1)
+            if self.growing(row,col+1,adjacentDict):
+                self.placeTile(Tiles(row,col+1))
+        if direction=='U':
+            adjacentDict=self.adjacentHelper(row-1,col)
+            if self.growing(row,col-1,adjacentDict):
+                self.placeTile(Tiles(row-1,col))
+        if direction=='D':
+            adjacentDict=self.adjacentHelper(row+1,col)
+            if self.growing(row,col-1,adjacentDict):
+                self.placeTile(Tiles(row+1,col))
+        
 
     def placeTile(self, tile: Tiles, hotel=None):
         row = tile.row
@@ -222,6 +242,7 @@ class Board:
 
             for key in adjacentDict:
                 if key != "meta" and adjacentDict[key]["symbol"] == "O":
+                    self.checkGrowing(key,row,col)
                     self.updateBoard(
                         Tiles(adjacentDict[key]["row"], adjacentDict[key]["column"]),
                         hotelName,
