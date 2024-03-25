@@ -4,24 +4,23 @@ tabulate
 
 -------------------------------------------------------------------------------------
 
-The test json files can be used to test the outputs of the code by running the command
-from Adminstrator/ 
-
-python3 admin-tester/runjsontest.py
-
-python3 board-tester/runjsontest.py
-
-
 To run unit tests from Adminstrator/
 
 pytest unit-test.py
 
 
-To run the Game betwwen Automated Players
+To run the Game between Automated Players
 
-python AutomatedGamePlay.py
+python3 AutomatedGamePlay.py
+
+You will see a prompt like :
+
+Pick a strategy for the player, 1 -> Ordered, 2 -> Random ----> 
+
+Enter 1 to pick Ordered strategy for the player
+Enter 2 to pick Random strategy for player
+
+A sample game output with both players playing with ordered strategy is in the sample_output.txt file
 
  
-New test files can be added to the admin-tester/state-tests directory to be included in the testing
-New test files can be added to the board-tester/board-tests directory to be included in the testing
 
