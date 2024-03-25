@@ -180,7 +180,6 @@ class Board:
         return [maxHotel.label]
     
     def checkGrowing(self,direction,row,col):
-        print("here")
         if direction=='L':
             adjacentDict=self.adjacentHelper(row,col-1)
             if self.growing(row,col-1,adjacentDict):
