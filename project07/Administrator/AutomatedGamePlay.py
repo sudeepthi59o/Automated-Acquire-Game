@@ -22,7 +22,7 @@ class AutomatedGamePlay:
         print("Player2")
         self.p2_strategy = self.get_input()
         # self.p1_strategy=1
-        # self.p2_strategy=1
+        # self.p2_strategy=2
         #int(input('Pick a strategy for the game: 1 - Ordered, 2 - Random ---->'))  
         self.game.setup(players=["Player A","Player B"],strategies=[self.p1_strategy,self.p2_strategy])
 
@@ -169,7 +169,7 @@ class AutomatedGamePlay:
             return winner+ " wins the game!!"
 
 
-        print(self.game.board.printB())
+        self.game.board.printB()
 
         print("Turn Over")
         print("=============================================================>")
