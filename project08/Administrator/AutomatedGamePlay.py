@@ -37,13 +37,16 @@ class AutomatedGamePlay:
             return self.orderedStrategy()
         else:
             return self.randomStrategy()
-
-    def orderedStrategy(self):
+        
+    def printCurrentStateOfPlayer(self):
         print("Player playing: "+self.game.players[0].name)
         print("Current state of players:")
         for i in range(len(self.game.players)):
             print(str(self.game.players[i]))
 
+    def orderedStrategy(self):
+        self.printCurrentStateOfPlayer()
+        
         currPlayer=self.game.players[0]
         sorted_tiles = sorted(currPlayer.tiles, key=lambda tile: (tile.row, tile.column))
         smallestHotel="Worldwide"
@@ -110,10 +113,7 @@ class AutomatedGamePlay:
         return share_num
 
     def randomStrategy(self):
-        print("Player playing: "+self.game.players[0].name)
-        print("Current state of players:")
-        for i in range(len(self.game.players)):
-            print(str(self.game.players[i]))
+        self.printCurrentStateOfPlayer()
 
         currPlayer=self.game.players[0]
         picked_tile = self.getRandomTile(currPlayer)

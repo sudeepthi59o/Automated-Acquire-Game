@@ -125,17 +125,28 @@ class Game:
         print("*****")
         return self.getStateObj()
     
-    def payout_players(self,playername,majority_minority,num_shareholders,price,hotel,flag):
-        
-        if majority_minority=='majority' and num_shareholders==1:
-            for player in self.players:
+    def payout(self,playername,price,hotel,flag):
+        for player in self.players:
                         if player.name == playername:
-                            player.cash += price * 10
+                            player.cash += price
                             self.assignedShares[hotel][playername] = 0
                             sharecnt=player.trackShareForPlayer(hotel)
                             self.numShares[hotel]+=sharecnt
                             player.removeShareForPlayer(hotel)
-            return flag
+        return flag
+    
+    def payout_players(self,playername,majority_minority,num_shareholders,price,hotel,flag):
+        
+        if majority_minority=='majority' and num_shareholders==1:
+            self.payout(playername,price * 10, hotel, flag )
+            # for player in self.players:
+            #             if player.name == playername:
+            #                 player.cash += price * 10
+            #                 self.assignedShares[hotel][playername] = 0
+            #                 sharecnt=player.trackShareForPlayer(hotel)
+            #                 self.numShares[hotel]+=sharecnt
+            #                 player.removeShareForPlayer(hotel)
+            # return flag
         
         elif majority_minority=='majority' and num_shareholders>1:
             for player in self.players:
@@ -151,26 +162,28 @@ class Game:
             return flag
         
         elif majority_minority=='minority' and num_shareholders==1 and not flag:
-            for player in self.players:
-                        if player.name == playername:
-                            player.cash += price * 5
-                            self.assignedShares[hotel][playername] = 0
-                            sharecnt=player.trackShareForPlayer(hotel)
-                            self.numShares[hotel]+=sharecnt
-                            player.removeShareForPlayer(hotel)
-            return flag
+            self.payout(playername,price * 5, hotel, flag )
+            # for player in self.players:
+            #             if player.name == playername:
+            #                 player.cash += price * 5
+            #                 self.assignedShares[hotel][playername] = 0
+            #                 sharecnt=player.trackShareForPlayer(hotel)
+            #                 self.numShares[hotel]+=sharecnt
+            #                 player.removeShareForPlayer(hotel)
+            # return flag
 
         elif majority_minority=='minority' and num_shareholders>1 and not flag:
-            for player in self.players:
-                        if player.name == playername:
-                            player.cash += round(
-                                (price * 5) / num_shareholders
-                            )
-                            self.assignedShares[hotel][playername] = 0
-                            sharecnt=player.trackShareForPlayer(hotel)
-                            self.numShares[hotel]+=sharecnt
-                            player.removeShareForPlayer(hotel)
-            return flag
+            self.payout(playername,round((price * 5) / num_shareholders), hotel, flag )
+            # for player in self.players:
+            #             if player.name == playername:
+            #                 player.cash += round(
+            #                     (price * 5) / num_shareholders
+            #                 )
+            #                 self.assignedShares[hotel][playername] = 0
+            #                 sharecnt=player.trackShareForPlayer(hotel)
+            #                 self.numShares[hotel]+=sharecnt
+            #                 player.removeShareForPlayer(hotel)
+            # return flag
 
     
     def hotel_merge_pay(self,hotellist,merge_copy):
