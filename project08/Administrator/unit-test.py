@@ -351,4 +351,4 @@ def test_getRandomHotel():
 
 def test_getRandomShares():
     result=AutomatedGamePlay().getRandomShares()
-    assert result in [0,1,2]
+    assert result in [0,1,2,3]

@@ -109,7 +109,7 @@ class AutomatedGamePlay:
         return self.hotels[hotel_num]
     
     def getRandomShares(self):
-        share_num=random.randint(0,2)
+        share_num=random.randint(0,3)
         return share_num
 
     def randomStrategy(self):
