@@ -1,0 +1,2 @@
+Player1
+Pick a strategy for the player, 1 -> Ordered, 2 -> Random ----> 

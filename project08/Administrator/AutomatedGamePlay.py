@@ -9,22 +9,24 @@ class AutomatedGamePlay:
         self.hotels=list(self.game.board.allHotels.keys())
         self.randomTries=10
 
-    def get_input(self):
-        value = int(input("Pick a strategy for the player, 1 -> Ordered, 2 -> Random ----> "))
-        if value in [1,2]:
-            return value
-        else:
-            self.get_input()
+    # def get_input(self):
+    #     value = int(input("Pick a strategy for the player, 1 -> Ordered, 2 -> Random ----> "))
+    #     if value in [1,2]:
+    #         return value
+    #     else:
+    #         self.get_input()
 
     def setupGame(self):
-        print("Player1")
-        self.p1_strategy = self.get_input()
-        print("Player2")
-        self.p2_strategy = self.get_input()
-        # self.p1_strategy=1
-        # self.p2_strategy=2
+        # print("Player1")
+        # self.p1_strategy = self.get_input()
+        # print("Player2")
+        # self.p2_strategy = self.get_input()
+        self.p1_strategy=1
+        self.p2_strategy=2
+        self.p3_strategy=1
+        self.p4_strategy=2
         #int(input('Pick a strategy for the game: 1 - Ordered, 2 - Random ---->'))  
-        self.game.setup(players=["Player A","Player B"],strategies=[self.p1_strategy,self.p2_strategy])
+        self.game.setup(players=["Player1","Player2","Player3","Player4"],strategies=[self.p1_strategy,self.p2_strategy,self.p3_strategy,self.p4_strategy])
 
     def no_valid_moves(self):
         print("Turn Over")
@@ -33,6 +35,10 @@ class AutomatedGamePlay:
         return self.nextTurn()
     
     def nextTurn(self):
+        self.game.board.printB()
+
+        print("Turn Over")
+        print("=============================================================>")
         if self.game.players[0].strategy==1:
             return self.orderedStrategy()
         else:
@@ -93,10 +99,6 @@ class AutomatedGamePlay:
                     shareCount-=1
         self.game.done()
 
-        self.game.board.printB()
-
-        print("Turn Over")
-        print("=============================================================>")
         return self.nextTurn()
 
     
@@ -168,11 +170,6 @@ class AutomatedGamePlay:
             winner=self.game.declare_winner()
             return winner+ " wins the game!!"
 
-
-        self.game.board.printB()
-
-        print("Turn Over")
-        print("=============================================================>")
         return self.nextTurn()
 
     def playGame(self):
