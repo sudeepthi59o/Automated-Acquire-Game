@@ -27,7 +27,7 @@ class Game:
 
     def pickRandomTile(self):
         if len(self.allTiles)<2:
-            return True
+            return False
         num = random.randint(0, len(self.allTiles) - 1)
         tile = self.allTiles[num]
         return self.removeAvlTile(tile)
@@ -327,9 +327,10 @@ class Game:
         return self.getStateObj()
 
     def done(self):
-        res=self.players[0].tiles.append(self.pickRandomTile())
-        if res==True:
+        res=self.pickRandomTile()
+        if not res:
             return False
+        self.players[0].tiles.append(res)
         self.players.append(self.players.pop(0))
         return self.getStateObj()
 
