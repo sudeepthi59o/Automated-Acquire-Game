@@ -1,0 +1,7 @@
+Number of Games played: 100
+Number of players: 4
+
+Number of wins for player 1: 22
+Number of wins for player 2: 31
+Number of wins for player 3: 39
+Number of wins for player 4: 8

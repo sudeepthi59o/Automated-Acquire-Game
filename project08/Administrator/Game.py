@@ -125,7 +125,7 @@ class Game:
         print("*****")
         return self.getStateObj()
     
-    def payout(self,playername,price,hotel,flag):
+    def payout(self,playername,price,hotel):
         for player in self.players:
                         if player.name == playername:
                             player.cash += price
@@ -133,57 +133,6 @@ class Game:
                             sharecnt=player.trackShareForPlayer(hotel)
                             self.numShares[hotel]+=sharecnt
                             player.removeShareForPlayer(hotel)
-        return flag
-    
-    def payout_players(self,playername,majority_minority,num_shareholders,price,hotel,flag):
-        
-        if majority_minority=='majority' and num_shareholders==1:
-            self.payout(playername,price * 10, hotel, flag )
-            # for player in self.players:
-            #             if player.name == playername:
-            #                 player.cash += price * 10
-            #                 self.assignedShares[hotel][playername] = 0
-            #                 sharecnt=player.trackShareForPlayer(hotel)
-            #                 self.numShares[hotel]+=sharecnt
-            #                 player.removeShareForPlayer(hotel)
-            # return flag
-        
-        elif majority_minority=='majority' and num_shareholders>1:
-            for player in self.players:
-                        if player.name == playername:
-                            player.cash += round(
-                                (price * 15) / num_shareholders
-                            )
-                            self.assignedShares[hotel][playername] = 0
-                            sharecnt=player.trackShareForPlayer(hotel)
-                            self.numShares[hotel]+=sharecnt
-                            player.removeShareForPlayer(hotel)
-            flag=True
-            return flag
-        
-        elif majority_minority=='minority' and num_shareholders==1 and not flag:
-            self.payout(playername,price * 5, hotel, flag )
-            # for player in self.players:
-            #             if player.name == playername:
-            #                 player.cash += price * 5
-            #                 self.assignedShares[hotel][playername] = 0
-            #                 sharecnt=player.trackShareForPlayer(hotel)
-            #                 self.numShares[hotel]+=sharecnt
-            #                 player.removeShareForPlayer(hotel)
-            # return flag
-
-        elif majority_minority=='minority' and num_shareholders>1 and not flag:
-            self.payout(playername,round((price * 5) / num_shareholders), hotel, flag )
-            # for player in self.players:
-            #             if player.name == playername:
-            #                 player.cash += round(
-            #                     (price * 5) / num_shareholders
-            #                 )
-            #                 self.assignedShares[hotel][playername] = 0
-            #                 sharecnt=player.trackShareForPlayer(hotel)
-            #                 self.numShares[hotel]+=sharecnt
-            #                 player.removeShareForPlayer(hotel)
-            # return flag
 
     
     def hotel_merge_pay(self,hotellist,merge_copy):
@@ -193,14 +142,18 @@ class Game:
 
         for hotel in stockholders:
             price = shareDict[hotel][len(merge_copy[hotel])]
-            maj_flag = False
             num_majority=len(stockholders[hotel][0])
             num_minority=len(stockholders[hotel][1])
+            
+            price_majority = price*15/num_majority if num_majority>1 else price*10
+            price_minority = price*5/num_minority if num_minority>0 else 0
+    
             for playername in stockholders[hotel][0]:
-                maj_flag=self.payout_players(playername,'majority',num_majority,price,hotel,maj_flag)
-
+                self.payout(playername, round(price_majority), hotel)
+                
             for playername in stockholders[hotel][1]:
-                maj_flag=self.payout_players(playername,'minority',num_minority,price,hotel,maj_flag)
+                self.payout(playername, round(price_minority), hotel)
+        return False
 
 
     def initializeShares(self):
@@ -301,15 +254,7 @@ class Game:
                     majority.append(smaxshare)
                 else:
                     minority.append(smaxshare)
-                    break
 
-            while heap:
-                nextval, nextshare = heapq.heappop(heap)
-                nextval = -1 * nextval
-                if nextval == minority[0]:
-                    minority.append(nextshare)
-                else:
-                    break
             stockholders[hotel] = [majority, minority]
 
         return stockholders if stockholders else "error"

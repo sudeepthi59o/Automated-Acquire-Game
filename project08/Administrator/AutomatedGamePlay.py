@@ -9,23 +9,13 @@ class AutomatedGamePlay:
         self.hotels=list(self.game.board.allHotels.keys())
         self.randomTries=10
 
-    # def get_input(self):
-    #     value = int(input("Pick a strategy for the player, 1 -> Ordered, 2 -> Random ----> "))
-    #     if value in [1,2]:
-    #         return value
-    #     else:
-    #         self.get_input()
 
     def setupGame(self):
-        # print("Player1")
-        # self.p1_strategy = self.get_input()
-        # print("Player2")
-        # self.p2_strategy = self.get_input()
         self.p1_strategy=1
         self.p2_strategy=2
         self.p3_strategy=3
         self.p4_strategy=4
-        #int(input('Pick a strategy for the game: 1 - Ordered, 2 - Random ---->'))  
+        #Pick a strategy for the game: 1 - Ordered, 2 - Random, 3 - Alphabetical, 4- Anti Alphabetical 
         self.game.setup(players=["Player1","Player2","Player3","Player4"],strategies=[self.p1_strategy,self.p2_strategy,self.p3_strategy,self.p4_strategy])
 
     def no_valid_moves(self):
@@ -63,8 +53,6 @@ class AutomatedGamePlay:
         else:
             sorted_tiles = sorted(currPlayer.tiles, key=lambda tile: (tile.row, tile.column))
         smallestHotel="Worldwide"
-        for tile in sorted_tiles:
-            print(tile)
         smallestRow=sorted_tiles[0].row
         smallestCol=sorted_tiles[0].column
 
@@ -209,6 +197,3 @@ class AutomatedGamePlay:
             print(self.alphabeticalStrategy())
         elif self.p1_strategy == 4:
             print(self.anti_alphabeticalStrategy())
-
-g=AutomatedGamePlay()
-g.playGame()
