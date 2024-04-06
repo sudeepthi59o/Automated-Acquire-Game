@@ -264,7 +264,15 @@ class Game:
             self.board = Board([], [])
             i=0
             for player in players:
-                    self.players.append(AutomatedPlayer(player, 6000, [], [], 1 if strategies[i]==1 else 2))
+                    if strategies[i] == 1:
+                        playerStrategy = 1
+                    elif strategies[i] == 2:
+                        playerStrategy = 2
+                    elif strategies[i] == 3:
+                        playerStrategy = 3
+                    elif strategies[i] == 4:
+                        playerStrategy = 4
+                    self.players.append(AutomatedPlayer(player, 6000, [], [], playerStrategy))
                     i+=1
             self.initializeShares()
         else:
@@ -364,11 +372,13 @@ class Game:
             currCash[player.name]=player.cash
         
         print("Final Payout Completed")
+        print(currCash)
         winner=self.players[0].name
         for player in currCash:
             print(player+" has "+str(currCash[player]))
             if currCash[player]>currCash[winner]:
                 winner=player
+                print(winner)
         return winner
                 
 

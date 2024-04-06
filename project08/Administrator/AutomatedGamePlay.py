@@ -23,8 +23,8 @@ class AutomatedGamePlay:
         # self.p2_strategy = self.get_input()
         self.p1_strategy=1
         self.p2_strategy=2
-        self.p3_strategy=1
-        self.p4_strategy=2
+        self.p3_strategy=3
+        self.p4_strategy=4
         #int(input('Pick a strategy for the game: 1 - Ordered, 2 - Random ---->'))  
         self.game.setup(players=["Player1","Player2","Player3","Player4"],strategies=[self.p1_strategy,self.p2_strategy,self.p3_strategy,self.p4_strategy])
 
@@ -41,8 +41,12 @@ class AutomatedGamePlay:
         print("=============================================================>")
         if self.game.players[0].strategy==1:
             return self.orderedStrategy()
-        else:
+        elif self.game.players[0].strategy==2:
             return self.randomStrategy()
+        elif self.game.players[0].strategy==3:
+            return self.alphabeticalStrategy()
+        elif self.game.players[0].strategy == 4:
+            return self.anti_alphabeticalStrategy()
         
     def printCurrentStateOfPlayer(self):
         print("Player playing: "+self.game.players[0].name)
@@ -54,10 +58,13 @@ class AutomatedGamePlay:
         self.printCurrentStateOfPlayer()
         
         currPlayer=self.game.players[0]
-        sorted_tiles = sorted(currPlayer.tiles, key=lambda tile: (tile.row, tile.column))
-        smallestHotel="Worldwide"
         if tile == "des":
-            sorted_tiles.reverse()
+            sorted_tiles = sorted(currPlayer.tiles, key=lambda tile: (tile.row, tile.column),reverse=True)
+        else:
+            sorted_tiles = sorted(currPlayer.tiles, key=lambda tile: (tile.row, tile.column))
+        smallestHotel="Worldwide"
+        for tile in sorted_tiles:
+            print(tile)
         smallestRow=sorted_tiles[0].row
         smallestCol=sorted_tiles[0].column
 
@@ -83,12 +90,14 @@ class AutomatedGamePlay:
             print("=============================================================>")
             print("No more possible moves by the players")
             winner=self.game.declare_winner()
+            print(winner)
             return winner+ " wins the game!!"
 
         if self.game.gameEnd():
             print("=============================================================>")
             print("Game Ended!")
             winner=self.game.declare_winner()
+            print(winner)
             return winner+ " wins the game!!"
 
         shareCount=3
@@ -104,12 +113,15 @@ class AutomatedGamePlay:
         return self.nextTurn()
 
     def orderedStrategy(self):
+        print("InOrderedStartegy")
         self.strategy("asc",min)
 
     def alphabeticalStrategy(self):
+        print("InAlphabeticalStrategy")
         self.strategy("des",min)
 
     def anti_alphabeticalStrategy(self):
+        print("In-AntiAlphabeticalStrategy")
         self.strategy("asc",max)
     
     def getRandomTile(self,player):
@@ -125,6 +137,7 @@ class AutomatedGamePlay:
         return share_num
 
     def randomStrategy(self):
+        print("InRandomStrategy")
         self.printCurrentStateOfPlayer()
 
         currPlayer=self.game.players[0]
@@ -186,8 +199,12 @@ class AutomatedGamePlay:
         self.setupGame()
         if self.p1_strategy==1:
             print(self.orderedStrategy())
-        else:
+        elif self.p1_strategy == 2:
             print(self.randomStrategy())
+        elif self.p1_strategy == 3:
+            print(self.alphabeticalStrategy())
+        elif self.p1_strategy == 4:
+            print(self.anti_alphabeticalStrategy())
 
 g=AutomatedGamePlay()
 g.playGame()
