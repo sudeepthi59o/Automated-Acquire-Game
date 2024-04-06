@@ -50,18 +50,20 @@ class AutomatedGamePlay:
         for i in range(len(self.game.players)):
             print(str(self.game.players[i]))
 
-    def orderedStrategy(self):
+    def strategy(self,tile,order):
         self.printCurrentStateOfPlayer()
         
         currPlayer=self.game.players[0]
         sorted_tiles = sorted(currPlayer.tiles, key=lambda tile: (tile.row, tile.column))
         smallestHotel="Worldwide"
+        if tile == "des":
+            sorted_tiles.reverse()
         smallestRow=sorted_tiles[0].row
         smallestCol=sorted_tiles[0].column
 
         for hotel in self.game.board.allHotels.keys():
             if self.game.board.allHotels[hotel]["placed"]==False:
-                smallestHotel=min(smallestHotel,hotel)
+                smallestHotel=order(smallestHotel,hotel)
         
         res=self.game.place(smallestRow,smallestCol,smallestHotel)
 
@@ -101,6 +103,14 @@ class AutomatedGamePlay:
 
         return self.nextTurn()
 
+    def orderedStrategy(self):
+        self.strategy("asc",min)
+
+    def alphabeticalStrategy(self):
+        self.strategy("des",min)
+
+    def anti_alphabeticalStrategy(self):
+        self.strategy("asc",max)
     
     def getRandomTile(self,player):
         tile_num=random.randint(0,5)
@@ -179,5 +189,5 @@ class AutomatedGamePlay:
         else:
             print(self.randomStrategy())
 
-# g=AutomatedGamePlay()
-# g.playGame()
+g=AutomatedGamePlay()
+g.playGame()
