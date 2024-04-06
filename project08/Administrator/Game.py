@@ -372,13 +372,11 @@ class Game:
             currCash[player.name]=player.cash
         
         print("Final Payout Completed")
-        print(currCash)
         winner=self.players[0].name
         for player in currCash:
             print(player+" has "+str(currCash[player]))
             if currCash[player]>currCash[winner]:
                 winner=player
-                print(winner)
         return winner
                 
 

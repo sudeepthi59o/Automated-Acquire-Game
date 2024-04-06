@@ -90,14 +90,12 @@ class AutomatedGamePlay:
             print("=============================================================>")
             print("No more possible moves by the players")
             winner=self.game.declare_winner()
-            print(winner)
             return winner+ " wins the game!!"
 
         if self.game.gameEnd():
             print("=============================================================>")
             print("Game Ended!")
             winner=self.game.declare_winner()
-            print(winner)
             return winner+ " wins the game!!"
 
         shareCount=3
@@ -108,21 +106,27 @@ class AutomatedGamePlay:
                     break
                 else:
                     shareCount-=1
-        self.game.done()
+        
+        resdone=self.game.done()
+        if not resdone:
+            print("=============================================================>")
+            print("Out of tiles")
+            winner=self.game.declare_winner()
+            return winner+ " wins the game!!"
 
         return self.nextTurn()
 
     def orderedStrategy(self):
         print("InOrderedStartegy")
-        self.strategy("asc",min)
+        return self.strategy("asc",min)
 
     def alphabeticalStrategy(self):
         print("InAlphabeticalStrategy")
-        self.strategy("des",min)
+        return self.strategy("des",min)
 
     def anti_alphabeticalStrategy(self):
         print("In-AntiAlphabeticalStrategy")
-        self.strategy("asc",max)
+        return self.strategy("asc",max)
     
     def getRandomTile(self,player):
         tile_num=random.randint(0,5)
