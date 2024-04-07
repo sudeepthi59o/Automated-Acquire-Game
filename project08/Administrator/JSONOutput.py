@@ -48,7 +48,6 @@ class JSONOutput:
         return self.getActionObj(res,placed_tile_list[0][0],placed_tile_list[0][1],bought_share)
     
     def getActionObj(self,res,row,col,bought):
-        print(row,col)
         win_state=True if res else False
         if not row or not col:
             return {"win": win_state,"hotel":bought}
