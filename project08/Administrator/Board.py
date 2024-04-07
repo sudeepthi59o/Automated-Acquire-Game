@@ -50,10 +50,7 @@ class Board:
         return hotelName in self.allHotels.keys()
 
     def addTilesToHotel(self, hotel, tiles: list[Tiles]):
-        existing_tiles = self.allHotels[hotel]["dataObj"].tiles
-        combined_tiles = existing_tiles + tiles
-        combined_tiles_set = set((tile.row, tile.column) for tile in combined_tiles)
-        self.allHotels[hotel]["dataObj"].tiles += [Tiles(r,c) for r,c in combined_tiles_set]
+        self.allHotels[hotel]["dataObj"].tiles += tiles
 
 
     def printB(self)->None:
