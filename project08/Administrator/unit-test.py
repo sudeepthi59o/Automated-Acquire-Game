@@ -185,7 +185,7 @@ def sample_state():
                 }
             ]
         },
-        "players": [
+        "player": [
             {
                 "player": "A",
                 "cash": 6000,
@@ -212,7 +212,8 @@ def sample_state():
                     {"row": "E", "column": "7"}
                 ]
             }
-        ]
+        ],
+        "share": [{"share":"American","count":5},{"share":"Continental","count":5},{"share":"Festival","count":5},{"share":"Sackson","count":5}]
     }
 
 

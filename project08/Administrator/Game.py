@@ -192,7 +192,7 @@ class Game:
         if state:
             
             self.board = Board(state["board"]["tiles"], state["board"]["hotels"])
-            if len(state["players"]) > 6:
+            if len(state["player"]) > 6:
                 raise Exception({"error": "Max number of allowed players is 6"})
 
             for player in state["player"]:
@@ -208,8 +208,8 @@ class Game:
             for key in self.numShares.keys():
                 self.numShares[key]=0
 
-            for share in player["share"]:
-                self.numShares[share.name]+=share.count
+            for share in state["share"]:
+                self.numShares[share["share"]]+=share["count"]
 
         elif players and not self.mode:
             
