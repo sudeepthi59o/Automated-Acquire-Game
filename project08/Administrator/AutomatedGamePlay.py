@@ -3,7 +3,7 @@ import random
 
 class AutomatedGamePlay:
     def __init__(self,state=None,test_mode=None) -> None:
-        self.game=Game(state=None)
+        self.game=Game(state)
         self.game.mode='automated'
         self.test_mode=test_mode
         self.players_without_vaild_moves=set()
@@ -26,12 +26,11 @@ class AutomatedGamePlay:
         return self.nextTurn()
     
     def nextTurn(self):
+        if self.test_mode:
+            return False
         self.game.board.printB()
         print("Turn Over")
         print("=============================================================>")
-
-        if self.test_mode:
-            return True
         
         if self.game.players[0].strategy==1:
             return self.orderedStrategy()
@@ -47,9 +46,11 @@ class AutomatedGamePlay:
         print("Current state of players:")
         for i in range(len(self.game.players)):
             print(str(self.game.players[i]))
+    
 
     def strategy(self,tile,order):
-        self.printCurrentStateOfPlayer()
+        if not self.test_mode:
+            self.printCurrentStateOfPlayer()
         
         currPlayer=self.game.players[0]
         if tile == "des":
@@ -57,22 +58,22 @@ class AutomatedGamePlay:
         else:
             sorted_tiles = sorted(currPlayer.tiles, key=lambda tile: (tile.row, tile.column))
         smallestHotel="Worldwide"
-        smallestRow=sorted_tiles[0].row
-        smallestCol=sorted_tiles[0].column
+        tile_row=sorted_tiles[0].row
+        tile_column=sorted_tiles[0].column
 
         for hotel in self.game.board.allHotels.keys():
             if self.game.board.allHotels[hotel]["placed"]==False:
                 smallestHotel=order(smallestHotel,hotel)
         
-        res=self.game.place(smallestRow,smallestCol,smallestHotel)
+        res=self.game.place(tile_row,tile_column,smallestHotel)
 
         maxtries=5                              #5 tries to place a tile
         while not res and maxtries>0:
             maxtries-=1
             sorted_tiles.append(sorted_tiles.pop(0))
-            smallestRow=sorted_tiles[0].row
-            smallestCol=sorted_tiles[0].column
-            res=self.game.place(smallestRow,smallestCol,smallestHotel)
+            tile_row=sorted_tiles[0].row
+            tile_column=sorted_tiles[0].column
+            res=self.game.place(tile_row,tile_column,smallestHotel)
         
         if maxtries==0 and not res and len(self.players_without_vaild_moves)<len(self.game.players):
             self.players_without_vaild_moves.add(self.game.players[0].name)
@@ -134,7 +135,8 @@ class AutomatedGamePlay:
 
     def randomStrategy(self):
         print("InRandomStrategy")
-        self.printCurrentStateOfPlayer()
+        if not self.test_mode:
+            self.printCurrentStateOfPlayer()
 
         currPlayer=self.game.players[0]
         picked_tile = self.getRandomTile(currPlayer)
@@ -201,6 +203,3 @@ class AutomatedGamePlay:
             print(self.alphabeticalStrategy())
         elif self.p1_strategy == 4:
             print(self.anti_alphabeticalStrategy())
-
-g=AutomatedGamePlay()
-g.playGame()

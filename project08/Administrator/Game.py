@@ -190,7 +190,6 @@ class Game:
         self.assignedTiles = []
         
         if state:
-            
             self.board = Board(state["board"]["tiles"], state["board"]["hotels"])
             if len(state["player"]) > 6:
                 raise Exception({"error": "Max number of allowed players is 6"})

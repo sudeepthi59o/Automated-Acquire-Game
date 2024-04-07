@@ -1,5 +1,6 @@
 {
-  "player": {
+  "player": [
+    {
     "player": "A",
     "cash": 6000,
     "shares": [
@@ -9,23 +10,51 @@
       }
     ],
     "tiles": [
-      {"row": "F", "column": "8"},
-      {"row": "I", "column": "11"},
-      {"row": "G", "column": "9"},
-      {"row": "D", "column": "5"},
-      {"row": "I", "column": "12"},
-      {"row": "C", "column": "4"}
+      {
+        "row": "F",
+        "column": "8"
+      },
+      {
+        "row": "I",
+        "column": "11"
+      },
+      {
+        "row": "G",
+        "column": "9"
+      },
+      {
+        "row": "D",
+        "column": "5"
+      },
+      {
+        "row": "I",
+        "column": "12"
+      },
+      {
+        "row": "C",
+        "column": "4"
+      }
     ]
-  },
+  }
+],
   "board": {
     "tiles": [
       {
         "row": "A",
         "column": "1"
       },
-      {"row": "B", "column": "3"},
-      {"row": "B", "column": "2"},
-      {"row": "C", "column": "2"},
+      {
+        "row": "B",
+        "column": "3"
+      },
+      {
+        "row": "B",
+        "column": "2"
+      },
+      {
+        "row": "C",
+        "column": "2"
+      },
       {
         "row": "F",
         "column": "9"
@@ -39,9 +68,18 @@
       {
         "hotel": "Sackson",
         "tiles": [
-          {"row": "B", "column": "3"},
-          {"row": "B", "column": "2"},
-          {"row": "C", "column": "2"}
+          {
+            "row": "B",
+            "column": "3"
+          },
+          {
+            "row": "B",
+            "column": "2"
+          },
+          {
+            "row": "C",
+            "column": "2"
+          }
         ]
       }
     ]
@@ -457,20 +495,53 @@
     }
   ],
   "share": [
-    {"share": "American","count":24},
-      {"share":"Continental","count":24},
-      {"share":"Festival","count":24},
-      {"share":"Imperial","count":24},
-      {"share":"Tower","count":24},
-      {"share":"Sackson","count":21},
-      {"share":"Worldwide","count":24}
+    {
+      "share": "American",
+      "count": 24
+    },
+    {
+      "share": "Continental",
+      "count": 24
+    },
+    {
+      "share": "Festival",
+      "count": 24
+    },
+    {
+      "share": "Imperial",
+      "count": 24
+    },
+    {
+      "share": "Tower",
+      "count": 24
+    },
+    {
+      "share": "Sackson",
+      "count": 21
+    },
+    {
+      "share": "Worldwide",
+      "count": 24
+    }
   ],
   "xhotel": [
-    {"hotel": "American"},
-      {"hotel": "Continental"},
-      {"hotel": "Festival"},
-      {"hotel": "Imperial"},
-      {"hotel": "Tower"},
-      {"hotel": "Worldwide"}
+    {
+      "hotel": "American"
+    },
+    {
+      "hotel": "Continental"
+    },
+    {
+      "hotel": "Festival"
+    },
+    {
+      "hotel": "Imperial"
+    },
+    {
+      "hotel": "Tower"
+    },
+    {
+      "hotel": "Worldwide"
+    }
   ]
 }
