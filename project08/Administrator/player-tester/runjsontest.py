@@ -6,15 +6,11 @@ parent_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_directory)
 
 
-from AutomatedGamePlay import AutomatedGamePlay
 from JSONOutput import JSONOutput
 
 def process_json(input_data):
-    automatedGame=AutomatedGamePlay(state=input_data,test_mode=True)
-    res=automatedGame.orderedStrategy()
-    output=automatedGame.game.getStateObj()
     js=JSONOutput()
-    return js.compareJSON(input_data,output,res)
+    return js.runGame(input_data)
 
 def run_test(input_file_name, output_file_name,N):
     try:

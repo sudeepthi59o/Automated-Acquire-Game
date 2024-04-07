@@ -1,3 +1,4 @@
+from AutomatedGamePlay import AutomatedGamePlay
 
 class JSONOutput:
     def __init__(self) -> None:
@@ -10,6 +11,12 @@ class JSONOutput:
             "Continental": 0,
             "Tower": 0,
         }
+    
+    def runGame(self,input_data):
+        self.automatedGame=AutomatedGamePlay(state=input_data,test_mode=True)
+        res=self.automatedGame.orderedStrategy()
+        output=self.automatedGame.game.getStateObj()
+        return self.compareJSON(input_data,output,res)
 
     def compareJSON(self,input_data,output,res):
         initial_shares=input_data["player"][0]["shares"]
@@ -41,7 +48,12 @@ class JSONOutput:
         return self.getActionObj(res,placed_tile_list[0][0],placed_tile_list[0][1],bought_share)
     
     def getActionObj(self,res,row,col,bought):
+        print(row,col)
         win_state=True if res else False
         if not row or not col:
             return {"win": win_state,"hotel":bought}
-        return {"win": win_state,"hotel":bought,"place":{"row":row,"column":col}}
+        hotel=self.automatedGame.game.board.board[int(ord(row)-ord("A"))][int(col) - 1]
+        if hotel not in (" ","O"):
+            return {"win": win_state,"hotel":bought,"place":{"row":row,"column":col,"hotel":hotel}}
+        else:
+            return {"win": win_state,"hotel":bought,"place":{"row":row,"column":col}}

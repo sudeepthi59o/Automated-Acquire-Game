@@ -6,6 +6,7 @@ from Share import Share
 from Player import Player
 from Game import Game
 from AutomatedGamePlay import AutomatedGamePlay
+from JSONOutput import JSONOutput
 
 
 @pytest.fixture
@@ -353,3 +354,21 @@ def test_getRandomHotel():
 def test_getRandomShares():
     result=AutomatedGamePlay().getRandomShares()
     assert result in [0,1,2,3]
+
+def test_nextTurn():
+    g=AutomatedGamePlay(test_mode=True)
+    res=g.nextTurn()
+    assert res==False
+
+
+#---------- Adding for Game.py---------------------
+    
+def test_declareWinner(sample_game):
+    result1=sample_game.declare_winner()
+    assert result1=='A'
+
+def test_gameEnd(sample_game):
+    result1=sample_game.gameEnd()
+    assert result1==False
+
+
