@@ -193,15 +193,14 @@ class AutomatedGamePlay:
 
     def playGame(self):
         self.setupGame()
-        while True:
-            if self.game.players[0]==1:
-                print(self.orderedStrategy())
-            elif self.game.players[0] == 2:
-                print(self.randomStrategy())
-            elif self.game.players[0]== 3:
-                print(self.alphabeticalStrategy())
-            elif self.game.players[0] == 4:
-                print(self.anti_alphabeticalStrategy())
+        if self.p1_strategy==1:
+            print(self.orderedStrategy())
+        elif self.p1_strategy == 2:
+            print(self.randomStrategy())
+        elif self.p1_strategy== 3:
+            print(self.alphabeticalStrategy())
+        elif self.p1_strategy == 4:
+            print(self.anti_alphabeticalStrategy())
 
 g=AutomatedGamePlay()
 g.playGame()

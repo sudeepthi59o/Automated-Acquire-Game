@@ -141,7 +141,7 @@ class Game:
                 return self.getStateObj()
 
         for hotel in stockholders:
-            price = shareDict[hotel][len(merge_copy[hotel])]
+            price = shareDict[hotel][len(merge_copy[hotel])] if len(merge_copy[hotel])<=41 else shareDict[hotel][41]
             num_majority=len(stockholders[hotel][0])
             num_minority=len(stockholders[hotel][1])
             
@@ -300,7 +300,7 @@ class Game:
         for hotel in self.board.allHotels.keys():
             if self.board.allHotels[hotel]["placed"]:
                 hotelsOnBoard += 1
-                if len(self.board.allHotels[hotel]["dataObj"].tiles) == 41:
+                if len(self.board.allHotels[hotel]["dataObj"].tiles) >= 41:
                     return True
                 elif len(self.board.allHotels[hotel]["dataObj"].tiles) >= 11:
                     safeHotels += 1
@@ -321,7 +321,6 @@ class Game:
         res=self.hotel_merge_pay(hotellist,merge_copy)
         for player in self.players:
             currCash[player.name]=player.cash
-        
         print("Final Payout Completed")
         winner=self.players[0].name
         for player in currCash:
