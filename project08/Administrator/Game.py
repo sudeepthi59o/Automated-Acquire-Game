@@ -195,7 +195,7 @@ class Game:
             if len(state["players"]) > 6:
                 raise Exception({"error": "Max number of allowed players is 6"})
 
-            for player in state["players"]:
+            for player in state["player"]:
                 self.players.append(self.getPlayerObj(player))
 
             for tile in state["board"]["tiles"]:
@@ -204,6 +204,12 @@ class Game:
                 self.removeAvlTile(tile)
 
             self.initializeShares()
+
+            for key in self.numShares.keys():
+                self.numShares[key]=0
+
+            for share in player["share"]:
+                self.numShares[share.name]+=share.count
 
         elif players and not self.mode:
             

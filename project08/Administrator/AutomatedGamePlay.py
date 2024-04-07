@@ -2,9 +2,10 @@ from Game import Game
 import random
 
 class AutomatedGamePlay:
-    def __init__(self) -> None:
-        self.game=Game()
+    def __init__(self,state=None,test_mode=None) -> None:
+        self.game=Game(state=None)
         self.game.mode='automated'
+        self.test_mode=test_mode
         self.players_without_vaild_moves=set()
         self.hotels=list(self.game.board.allHotels.keys())
         self.randomTries=10
@@ -26,9 +27,12 @@ class AutomatedGamePlay:
     
     def nextTurn(self):
         self.game.board.printB()
-
         print("Turn Over")
         print("=============================================================>")
+
+        if self.test_mode:
+            return True
+        
         if self.game.players[0].strategy==1:
             return self.orderedStrategy()
         elif self.game.players[0].strategy==2:
@@ -189,11 +193,15 @@ class AutomatedGamePlay:
 
     def playGame(self):
         self.setupGame()
-        if self.p1_strategy==1:
-            print(self.orderedStrategy())
-        elif self.p1_strategy == 2:
-            print(self.randomStrategy())
-        elif self.p1_strategy == 3:
-            print(self.alphabeticalStrategy())
-        elif self.p1_strategy == 4:
-            print(self.anti_alphabeticalStrategy())
+        while True:
+            if self.game.players[0]==1:
+                print(self.orderedStrategy())
+            elif self.game.players[0] == 2:
+                print(self.randomStrategy())
+            elif self.game.players[0]== 3:
+                print(self.alphabeticalStrategy())
+            elif self.game.players[0] == 4:
+                print(self.anti_alphabeticalStrategy())
+
+g=AutomatedGamePlay()
+g.playGame()
