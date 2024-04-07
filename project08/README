@@ -17,6 +17,7 @@ pytest unit-test.py
 
 game-results.txt file contains the distribution of wins among the 4 players in 100 games.
 
+New test files can be added to the player-tester/player-tests directory to be included in the testing
 
 
  
