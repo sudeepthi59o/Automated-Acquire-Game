@@ -1,0 +1,217 @@
+Player playing: Player1
+Current state of players:
+Player1: [Cash: 6000, Shares: [], Tiles: [['G', '2'] ['G', '6'] ['B', '11'] ['H', '8'] ['B', '4'] ['I', '12']]]
+Player2: [Cash: 6000, Shares: [], Tiles: [['I', '6'] ['H', '1'] ['A', '12'] ['H', '3'] ['A', '1'] ['G', '4']]]
+Player3: [Cash: 6000, Shares: [], Tiles: [['B', '2'] ['H', '7'] ['F', '12'] ['G', '5'] ['D', '1'] ['B', '9']]]
+Player4: [Cash: 6000, Shares: [], Tiles: [['C', '6'] ['E', '12'] ['G', '3'] ['D', '6'] ['C', '8'] ['E', '3']]]
+(6, 1)
+0
+*****
+Tile placed at {'row': 'G', 'column': '2'}
+Action: singleton
+*****
+{'board': {'tiles': [{'row': 'G', 'column': '2'}], 'hotels': []}, 'players': [{'player': 'Player1', 'cash': 6000, 'shares': [], 'tiles': [{'row': 'G', 'column': '6'}, {'row': 'B', 'column': '11'}, {'row': 'H', 'column': '8'}, {'row': 'B', 'column': '4'}, {'row': 'I', 'column': '12'}]}, {'player': 'Player2', 'cash': 6000, 'shares': [], 'tiles': [{'row': 'I', 'column': '6'}, {'row': 'H', 'column': '1'}, {'row': 'A', 'column': '12'}, {'row': 'H', 'column': '3'}, {'row': 'A', 'column': '1'}, {'row': 'G', 'column': '4'}]}, {'player': 'Player3', 'cash': 6000, 'shares': [], 'tiles': [{'row': 'B', 'column': '2'}, {'row': 'H', 'column': '7'}, {'row': 'F', 'column': '12'}, {'row': 'G', 'column': '5'}, {'row': 'D', 'column': '1'}, {'row': 'B', 'column': '9'}]}, {'player': 'Player4', 'cash': 6000, 'shares': [], 'tiles': [{'row': 'C', 'column': '6'}, {'row': 'E', 'column': '12'}, {'row': 'G', 'column': '3'}, {'row': 'D', 'column': '6'}, {'row': 'C', 'column': '8'}, {'row': 'E', 'column': '3'}]}]}
+1
+{'error': 'Not a valid tile for this player'}
+2
+{'error': 'Not a valid tile for this player'}
+3
+{'error': 'Not a valid tile for this player'}
+4
+{'error': 'Not a valid tile for this player'}
+5
+{'error': 'Not a valid tile for this player'}
+6
+{'error': 'Not a valid tile for this player'}
+7
+{'error': 'Not a valid tile for this player'}
+8
+{'error': 'Not a valid tile for this player'}
+9
+{'error': 'Not a valid tile for this player'}
+10
+{'error': 'Not a valid tile for this player'}
+11
+{'error': 'Not a valid tile for this player'}
+12
+{'error': 'Not a valid tile for this player'}
+13
+{'error': 'Not a valid tile for this player'}
+14
+{'error': 'Not a valid tile for this player'}
+15
+{'error': 'Not a valid tile for this player'}
+16
+{'error': 'Not a valid tile for this player'}
+17
+{'error': 'Not a valid tile for this player'}
+18
+{'error': 'Not a valid tile for this player'}
+19
+{'error': 'Not a valid tile for this player'}
+20
+{'error': 'Not a valid tile for this player'}
+21
+{'error': 'Not a valid tile for this player'}
+22
+{'error': 'Not a valid tile for this player'}
+23
+{'error': 'Not a valid tile for this player'}
+24
+{'error': 'Not a valid tile for this player'}
+25
+{'error': 'Not a valid tile for this player'}
+26
+{'error': 'Not a valid tile for this player'}
+27
+{'error': 'Not a valid tile for this player'}
+28
+{'error': 'Not a valid tile for this player'}
+29
+{'error': 'Not a valid tile for this player'}
+30
+{'error': 'Not a valid tile for this player'}
+31
+{'error': 'Not a valid tile for this player'}
+32
+{'error': 'Not a valid tile for this player'}
+33
+{'error': 'Not a valid tile for this player'}
+34
+{'error': 'Not a valid tile for this player'}
+35
+{'error': 'Not a valid tile for this player'}
+36
+{'error': 'Not a valid tile for this player'}
+37
+{'error': 'Not a valid tile for this player'}
+38
+{'error': 'Not a valid tile for this player'}
+39
+{'error': 'Not a valid tile for this player'}
+40
+{'error': 'Not a valid tile for this player'}
+41
+{'error': 'Not a valid tile for this player'}
+42
+{'error': 'Not a valid tile for this player'}
+43
+{'error': 'Not a valid tile for this player'}
+44
+{'error': 'Not a valid tile for this player'}
+45
+{'error': 'Not a valid tile for this player'}
+46
+{'error': 'Not a valid tile for this player'}
+47
+{'error': 'Not a valid tile for this player'}
+48
+{'error': 'Not a valid tile for this player'}
+49
+{'error': 'Not a valid tile for this player'}
+50
+{'error': 'Not a valid tile for this player'}
+51
+{'error': 'Not a valid tile for this player'}
+52
+{'error': 'Not a valid tile for this player'}
+53
+{'error': 'Not a valid tile for this player'}
+54
+{'error': 'Not a valid tile for this player'}
+55
+{'error': 'Not a valid tile for this player'}
+56
+{'error': 'Not a valid tile for this player'}
+57
+{'error': 'Not a valid tile for this player'}
+58
+{'error': 'Not a valid tile for this player'}
+59
+{'error': 'Not a valid tile for this player'}
+60
+{'error': 'Not a valid tile for this player'}
+61
+{'error': 'Not a valid tile for this player'}
+62
+{'error': 'Not a valid tile for this player'}
+63
+{'error': 'Not a valid tile for this player'}
+64
+{'error': 'Not a valid tile for this player'}
+65
+{'error': 'Not a valid tile for this player'}
+66
+{'error': 'Not a valid tile for this player'}
+67
+{'error': 'Not a valid tile for this player'}
+68
+{'error': 'Not a valid tile for this player'}
+69
+{'error': 'Not a valid tile for this player'}
+70
+{'error': 'Not a valid tile for this player'}
+71
+{'error': 'Not a valid tile for this player'}
+72
+{'error': 'Not a valid tile for this player'}
+73
+{'error': 'Not a valid tile for this player'}
+74
+{'error': 'Not a valid tile for this player'}
+75
+{'error': 'Not a valid tile for this player'}
+76
+{'error': 'Not a valid tile for this player'}
+77
+{'error': 'Not a valid tile for this player'}
+78
+{'error': 'Not a valid tile for this player'}
+79
+{'error': 'Not a valid tile for this player'}
+80
+{'error': 'Not a valid tile for this player'}
+81
+{'error': 'Not a valid tile for this player'}
+82
+{'error': 'Not a valid tile for this player'}
+83
+{'error': 'Not a valid tile for this player'}
+(6, 5)
+0
+{'error': 'Not a valid tile for this player'}
+(1, 10)
+0
+{'error': 'Not a valid tile for this player'}
+(7, 7)
+0
+{'error': 'Not a valid tile for this player'}
+(1, 3)
+0
+{'error': 'Not a valid tile for this player'}
+(8, 11)
+0
+{'error': 'Not a valid tile for this player'}
+{(6, 1): [<Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>, <Game.Game object at 0x102582fa0>], (6, 5): [], (1, 10): [], (7, 7): [], (1, 3): [], (8, 11): []}
++---+---+---+---+---+---+---+---+---+---+----+----+----+
+|   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
++---+---+---+---+---+---+---+---+---+---+----+----+----+
+| A |   |   |   |   |   |   |   |   |   |    |    |    |
++---+---+---+---+---+---+---+---+---+---+----+----+----+
+| B |   |   |   |   |   |   |   |   |   |    |    |    |
++---+---+---+---+---+---+---+---+---+---+----+----+----+
+| C |   |   |   |   |   |   |   |   |   |    |    |    |
++---+---+---+---+---+---+---+---+---+---+----+----+----+
+| D |   |   |   |   |   |   |   |   |   |    |    |    |
++---+---+---+---+---+---+---+---+---+---+----+----+----+
+| E |   |   |   |   |   |   |   |   |   |    |    |    |
++---+---+---+---+---+---+---+---+---+---+----+----+----+
+| F |   |   |   |   |   |   |   |   |   |    |    |    |
++---+---+---+---+---+---+---+---+---+---+----+----+----+
+| G |   | O |   |   |   |   |   |   |   |    |    |    |
++---+---+---+---+---+---+---+---+---+---+----+----+----+
+| H |   |   |   |   |   |   |   |   |   |    |    |    |
++---+---+---+---+---+---+---+---+---+---+----+----+----+
+| I |   |   |   |   |   |   |   |   |   |    |    |    |
++---+---+---+---+---+---+---+---+---+---+----+----+----+
+============================
