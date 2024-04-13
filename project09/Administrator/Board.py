@@ -208,6 +208,8 @@ class Board:
             return "singleton",None
         
         elif self.founding(row, col, adjacentDict):
+            print("kjdfgkhdgskhfghksdgh",hotel)
+
             if hotel==None:
                 return "error",None
             elif self.allHotels[hotel]["placed"] == True:

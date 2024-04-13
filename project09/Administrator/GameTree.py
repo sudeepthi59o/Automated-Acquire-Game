@@ -5,6 +5,7 @@ from Share import Share
 from Tiles import Tiles
 from Game import Game
 import random
+import copy
 
 class GameTreeAdmin:
     def __init__(self,game) -> None:
@@ -14,10 +15,6 @@ class GameTreeAdmin:
     def getRandomHotel(self):
         hotel_num=random.randint(0,6)
         return hotel_num
-    
-    def getRandomTile(self,player):
-        tile_num=random.randint(0,5)
-        return tile_num
     
     def isGameDone(self):
         if self.game.gameEnd():
@@ -46,16 +43,14 @@ class GameTreeAdmin:
         self.children={}
         tiles=self.game.players[0].tiles
         for tile in tiles:
+            print(tile.row,tile.column)
             self.children[(tile.row,tile.column)]=[]
 
         self.cnt=0
         for tile in self.children:
-            print(tile)
             for i in range(100):
-                print(i)
-                game_copy=self.game
-                res=game_copy.place(tile[0],tile[1],self.getRandomHotel())
-                print(res)
+                game_copy=copy.deepcopy(self.game)
+                res=game_copy.place(tile[0],tile[1],self.hotellist[self.getRandomHotel()])
                 if res=="error":
                     self.cnt+=1
                     break
@@ -70,7 +65,6 @@ class GameTreeAdmin:
 
         if self.cnt==6:
             self.replace_tile()
-        print(self.children)
         return self.children
 
 
@@ -78,6 +72,11 @@ class GameTreeAdmin:
 class GameTreePlayer:
     def __init__(self,children) -> None:
         self.tree=children
+    
+    def getRandomTile(self):
+        tile_num=random.randint(0,5)
+        return tile_num
+    
 
     def pickChild(self,strategy,children):
         tiles=[Tiles(x,y) for x,y in self.tree.keys()]
