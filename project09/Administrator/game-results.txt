@@ -1,7 +1,0 @@
-Number of Games played: 100
-Number of players: 4
-
-Number of wins for player 1 (Ordered): 22
-Number of wins for player 2 (Random): 31
-Number of wins for player 3 (Alphabetical): 39
-Number of wins for player 4 (Anti Alphabetical): 8

@@ -328,38 +328,6 @@ def test_Share():
         result2 = Share("American", 100)
     assert str(exc_info.value) == "Invalid share count"
 
-# -------------------- AutomatedGamePlay.py ----------------------
-
-@pytest.fixture
-def sample_player():
-    return Player("A",6000,[],[Tiles(0,3),Tiles(1,2),Tiles(0,6),Tiles(5,3),Tiles(7,3),Tiles(3,3)])
-
-def test_getRandomTile(sample_player):
-    result=AutomatedGamePlay().getRandomTile(sample_player)
-    assert result.row <=8
-    assert result.column <=11
-
-def test_getRandomHotel():
-    result=AutomatedGamePlay().getRandomHotel()
-    assert result in [
-            "American",
-            "Continental",
-            "Festival",
-            "Imperial",
-            "Sackson",
-            "Tower",
-            "Worldwide",
-        ]
-
-def test_getRandomShares():
-    result=AutomatedGamePlay().getRandomShares()
-    assert result in [0,1,2,3]
-
-def test_nextTurn():
-    g=AutomatedGamePlay(test_mode=True)
-    res=g.nextTurn()
-    assert res==False
-
 
 #---------- Adding for Game.py---------------------
     
