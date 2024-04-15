@@ -43,17 +43,20 @@ class AutomatedGamePlay:
         self.printCurrentStateOfPlayer()
         gtree=GameTreeAdmin(self.game)
         if gtree.isGameDone():
+            print("=============================================================>")
             return "Game Ended! "+self.game.declare_winner()+" wins the game!!"
         children=gtree.generate()
-        if not gtree.canContinueGame():
-            return "Out of tiles! "+self.game.declare_winner()+" wins the game!!"
-        for key,value in children.items():
-            value[0].board.printB()
-            print("============================")
         gplayer=GameTreePlayer(children)
-        next_game=gplayer.pickChild(strategy=strategy,children=children)
-        self.game=next_game
-        
+        tile,to_buy,replace_tile,hotel=gplayer.pickChild(strategy=strategy,children=children)
+        self.game.place(tile.row,tile.column,hotel)
+        print("Tile placed: ",tile)
+        for hotel in to_buy:
+            res=self.game.buy(hotel)
+            if res:
+                print("Bought share in : ",hotel)
+        print("Replacement tile: ",replace_tile)
+        self.game.done(replace_tile)  
+
         return self.nextTurn()
 
     def orderedStrategy(self):

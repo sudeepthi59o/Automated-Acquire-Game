@@ -103,7 +103,7 @@ class Game:
                 if player.name == players.name:
                     player.tiles = updatedtiles
         else:
-            print("Place request unsuccessful for "+str(Tiles(row,col).getTileObj()))
+            #print("Place request unsuccessful for "+str(Tiles(row,col).getTileObj()))
             return False
 
         self.removeTilesAfterPlace()
@@ -119,10 +119,10 @@ class Game:
             merge_res=self.hotel_merge_pay(hotellist,merge_copy)
 
         # self.board.printB()
-        print("*****") 
-        print("Tile placed at "+str(Tiles(row,col).getTileObj())) 
-        print("Action: "+res)
-        print("*****")
+        #print("*****") 
+        #print("Tile placed at "+str(Tiles(row,col).getTileObj())) 
+        #print("Action: "+res)
+        #print("*****")
         return self.getStateObj()
     
     def payout(self,playername,price,hotel):
@@ -284,13 +284,29 @@ class Game:
             return False
         return self.getStateObj()
 
-    def done(self):
-        res=self.pickRandomTile()
+    def done(self,tile=None):
+        if not tile:
+            res=self.pickRandomTile()
+        else:
+            res=self.delete_tile(tile)
+
         if not res:
             return False
-        self.players[0].tiles.append(res)
+        
+        if not tile:
+            self.players[0].tiles.append(res)
+        else:
+            self.players[0].tiles.append(tile)
         self.players.append(self.players.pop(0))
         return self.getStateObj()
+    
+    def delete_tile(self,tile):
+        for t in self.allTiles:
+            if t.row==tile.row and t.column==tile.column:
+                self.allTiles.remove(tile)
+                return True
+        return False
+
 
     def gameEnd(self):
         safeHotels=0
