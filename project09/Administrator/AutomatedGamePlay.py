@@ -47,13 +47,14 @@ class AutomatedGamePlay:
             return "Game Ended! "+self.game.declare_winner()+" wins the game!!"
         children=gtree.generate()
         gplayer=GameTreePlayer(children)
-        tile,to_buy,replace_tile,hotel=gplayer.pickChild(strategy=strategy,children=children)
+        tile,to_buy,replace_tile,hotel=gplayer.pickChild(strategy=strategy)
         self.game.place(tile.row,tile.column,hotel)
         print("Tile placed: ",tile)
-        for hotel in to_buy:
-            res=self.game.buy(hotel)
-            if res:
-                print("Bought share in : ",hotel)
+        if to_buy:
+            for hotel in to_buy:
+                res=self.game.buy(hotel)
+                if res:
+                    print("Bought share in : ",hotel)
         print("Replacement tile: ",replace_tile)
         self.game.done(replace_tile)  
 

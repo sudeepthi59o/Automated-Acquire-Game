@@ -52,13 +52,16 @@ class GameTreeAdmin:
                 if res=="error":
                     error_cnt+=1
                     break
+
                 available_shares=[]
                 for key,value in game_copy.numShares.items():
-                    for i in range(value):
-                        available_shares.append(key)
+                    if game_copy.board.allHotels[key]["placed"]:
+                        for i in range(value):
+                            available_shares.append(key)
+
                 can_buy_shares=permutations(available_shares,3)
-                self.children[tile]["share_list"].append(sorted(self.remove_duplicates(list(can_buy_shares)))[0])
-                self.children[tile]["replacement_list"].append(sorted(game_copy.allTiles, key=lambda tile: (tile.row, tile.column))[0])
+                self.children[tile]["share_list"].append(sorted(self.remove_duplicates(list(can_buy_shares))))
+                self.children[tile]["replacement_list"].append(sorted(game_copy.allTiles, key=lambda tile: (tile.row, tile.column)))
                 self.children[tile]["hotel"]=hotel
 
         if error_cnt==6:
@@ -79,28 +82,41 @@ class GameTreePlayer:
         num=random.randint(0,range)
         return num
         
-    def pickChild(self,strategy,children):
+    def pickChild(self,strategy):
         tiles=[Tiles(x,y) for x,y in self.tree.keys()]
         sorted_tiles = sorted(tiles, key=lambda tile: (tile.row, tile.column))
+        to_buy=None
         if strategy=="ordered":
             tile=sorted_tiles[0]
-            to_buy=children[(tile.row,tile.column)]["share_list"][0]
-            replace_tile=children[(tile.row,tile.column)]["replacement_list"][0]
-            hotel=children[(tile.row,tile.column)]["hotel"]
+            rep_num=self.getRandomNum(len(self.tree[(tile.row,tile.column)]["replacement_list"][0]))
+            if self.tree[(tile.row,tile.column)]["share_list"][0]:
+                to_buy=self.tree[(tile.row,tile.column)]["share_list"][0][0]
+            replace_tile=self.tree[(tile.row,tile.column)]["replacement_list"][0][rep_num-1]
+            hotel=self.tree[(tile.row,tile.column)]["hotel"]
+        
         elif strategy=="random":
             tile=sorted_tiles[self.getRandomTile()]
-            to_buy=children[(tile.row,tile.column)]["share_list"][self.getRandomNum(len(children[(tile.row,tile.column)]["share_list"])-1)]
-            replace_tile=children[(tile.row,tile.column)]["replacement_list"][self.getRandomNum(len(children[(tile.row,tile.column)]["replacement_list"])-1)]
-            hotel=children[(tile.row,tile.column)]["hotel"]
+            share_num=self.getRandomNum(len(self.tree[(tile.row,tile.column)]["share_list"][0]))
+            rep_num=self.getRandomNum(len(self.tree[(tile.row,tile.column)]["replacement_list"][0]))
+            if self.tree[(tile.row,tile.column)]["share_list"][0]:
+                to_buy=self.tree[(tile.row,tile.column)]["share_list"][0][share_num-1]
+            replace_tile=self.tree[(tile.row,tile.column)]["replacement_list"][0][rep_num-1]
+            hotel=self.tree[(tile.row,tile.column)]["hotel"]
+        
         elif strategy=="largest-alpha":
             tile=sorted_tiles[-1]
-            to_buy=children[(tile.row,tile.column)]["share_list"][0]
-            replace_tile=children[(tile.row,tile.column)]["replacement_list"][0]
-            hotel=children[(tile.row,tile.column)]["hotel"]
+            rep_num=self.getRandomNum(len(self.tree[(tile.row,tile.column)]["replacement_list"][0]))
+            if self.tree[(tile.row,tile.column)]["share_list"][0]:
+                to_buy=self.tree[(tile.row,tile.column)]["share_list"][0][0]
+            replace_tile=self.tree[(tile.row,tile.column)]["replacement_list"][0][rep_num-1]
+            hotel=self.tree[(tile.row,tile.column)]["hotel"]
+        
         elif strategy=="smallest-anti":
             tile=sorted_tiles[0]
-            to_buy=children[(tile.row,tile.column)]["share_list"][-1]
-            replace_tile=children[(tile.row,tile.column)]["replacement_list"][0]
-            hotel=children[(tile.row,tile.column)]["hotel"]
+            rep_num=self.getRandomNum(len(self.tree[(tile.row,tile.column)]["replacement_list"][0]))
+            if self.tree[(tile.row,tile.column)]["share_list"][0]:
+                to_buy=self.tree[(tile.row,tile.column)]["share_list"][0][-1]
+            replace_tile=self.tree[(tile.row,tile.column)]["replacement_list"][0][rep_num-1]
+            hotel=self.tree[(tile.row,tile.column)]["hotel"]
         
         return tile,to_buy,replace_tile,hotel
