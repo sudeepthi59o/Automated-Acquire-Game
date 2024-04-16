@@ -6,8 +6,8 @@ from Share import Share
 from Player import Player
 from Game import Game
 from AutomatedGamePlay import AutomatedGamePlay
-from JSONOutput import JSONOutput
-
+from GameTree import GameTreeAdmin
+from GameTree import GameTreePlayer
 
 @pytest.fixture
 def sample_board():
@@ -338,5 +338,30 @@ def test_declareWinner(sample_game):
 def test_gameEnd(sample_game):
     result1=sample_game.gameEnd()
     assert result1==False
+
+
+#---------- Adding for GameTree.py---------------------
+
+def test_removeDuplicates(sample_game):
+    gadmin=GameTreeAdmin(sample_game)
+    result=gadmin.remove_duplicates(["A","A","A"])
+    assert result==["A"]
+
+def test_getRandomTile():
+    gplayer=GameTreePlayer({})
+    result=gplayer.getRandomTile()
+    assert result>=0
+    assert result<=5
+
+def test_getRandomNum():
+    gplayer=GameTreePlayer({})
+    result=gplayer.getRandomNum(170)
+    assert result>=0
+    assert result<=170
+
+def test_numTiles(sample_game):
+    result=len(sample_game.allTiles)+len(sample_game.board.tiles)
+    assert result==108
+
 
 

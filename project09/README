@@ -1,24 +1,20 @@
 REQUIRED LIBRARIES
 ------------------
 tabulate
+itertools
+copy
+random
 
 -------------------------------------------------------------------------------------
-
-The test json files can be used to test the outputs of the code by running the command
-from Adminstrator/ 
-
-python3 player-tester/runjsontest.py
-
 
 To run unit tests from Adminstrator/
 
 pytest unit-test.py
 
 
-game-results.txt file contains the distribution of wins among the 4 players in 100 games.
+To run the game between 4 players from Adminstrator/
 
-New test files can be added to the player-tester/player-tests directory to be included in the testing
-
+python3 AutomatedGamePlay.py
 
  
 
