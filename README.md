@@ -1,9 +1,9 @@
 REQUIRED LIBRARIES
 ------------------
-tabulate
-itertools
-copy
-random
+- tabulate
+- itertools
+- copy
+- random
 
 -------------------------------------------------------------------------------------
 
